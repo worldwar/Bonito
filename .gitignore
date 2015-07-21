@@ -1,0 +1,13 @@
+.*
+.*/
+!.gitignore
+target/
+out/
+gradle/
+gradlew*
+*.iml
+*.iws
+*.ipr
+*.data
+*.war
+*.log
