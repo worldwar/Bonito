@@ -189,6 +189,8 @@ public class BEncodingTest {
     @Test
     public void shouldEncodeBObjectOfDictionaryType() {
         BObject object = BEncoding.decode(BENCODING_LIST_MAP);
-        assertThat(BEncoding.encode(object), is(BENCODING_LIST_MAP));
+        String encode = BEncoding.encode(object);
+        BObject anotherObject = BEncoding.decode(encode);
+        assertThat(object, is(anotherObject));
     }
 }
