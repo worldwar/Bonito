@@ -8,6 +8,6 @@ repositories {
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.5'
     compile 'com.google.guava:guava:18.0'
-
+    compile 'io.netty:netty-all:4.0.30.Final'
     testCompile 'junit:junit:4.11'
 }
