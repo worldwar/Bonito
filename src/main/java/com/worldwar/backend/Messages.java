@@ -20,6 +20,7 @@ public class Messages {
         types.put((byte) 0, MessageType.CHOKE);
         types.put((byte) 1, MessageType.UNCHOKE);
         types.put((byte) 2, MessageType.INTERESTED);
+        types.put((byte) 3, MessageType.NOT_INTERESTED);
     }
 
     private static byte[] peer_id() {
@@ -73,5 +74,9 @@ public class Messages {
 
     public static PeerMessage interested() {
         return new PeerMessage(1, new byte[]{2}, null, MessageType.INTERESTED);
+    }
+
+    public static PeerMessage notInterested() {
+        return new PeerMessage(1, new byte[]{3}, null, MessageType.NOT_INTERESTED);
     }
 }

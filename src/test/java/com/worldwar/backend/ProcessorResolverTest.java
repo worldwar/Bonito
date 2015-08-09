@@ -4,6 +4,7 @@ import com.worldwar.backend.processor.ChokeProcessor;
 import com.worldwar.backend.processor.HandshakeProcessor;
 import com.worldwar.backend.processor.InterestedProcessor;
 import com.worldwar.backend.processor.KeepAliveProcessor;
+import com.worldwar.backend.processor.NotInterestedProcessor;
 import com.worldwar.backend.processor.Processors;
 import com.worldwar.backend.processor.UnchokeProcessor;
 import org.junit.Before;
@@ -48,5 +49,11 @@ public class ProcessorResolverTest {
     public void shouldResolveInterestedMessage() {
         PeerMessage message = Messages.interested();
         assertThat(resolver.resolve(message), instanceOf(InterestedProcessor.class));
+    }
+
+    @Test
+    public void shouldResolveNotInterestedMessage() {
+        PeerMessage message = Messages.notInterested();
+        assertThat(resolver.resolve(message), instanceOf(NotInterestedProcessor.class));
     }
 }

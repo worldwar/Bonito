@@ -77,4 +77,22 @@ public class MessagesTest {
         MessageType type = Messages.type(1, new byte[] {2});
         assertThat(type, is(MessageType.INTERESTED));
     }
+
+    @Test
+    public void notInterestedMessageShouldHaveLenghtOne() {
+        PeerMessage notInterested = Messages.notInterested();
+        assertThat(notInterested.getLength(), is(1));
+    }
+
+    @Test
+    public void notInterestedMessageShouldHaveTypeNotInterested() {
+        PeerMessage notInterested = Messages.notInterested();
+        assertThat(notInterested.getType(), is(MessageType.NOT_INTERESTED));
+    }
+
+    @Test
+    public void shouldGetRightTypeOfNotInterestedMessage() {
+        MessageType type = Messages.type(1, new byte[] {3});
+        assertThat(type, is(MessageType.NOT_INTERESTED));
+    }
 }

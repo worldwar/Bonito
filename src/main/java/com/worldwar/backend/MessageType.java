@@ -5,5 +5,6 @@ public enum MessageType {
     KEEP_ALIVE,
     CHOKE,
     UNCHOKE,
-    INTERESTED
+    INTERESTED,
+    NOT_INTERESTED
 }
