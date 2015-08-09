@@ -1,11 +1,15 @@
-package com.worldwar.backend;
+package com.worldwar.backend.processor;
 
 import java.util.Arrays;
 
+import com.worldwar.backend.Channels;
+import com.worldwar.backend.ConnectionStatus;
+import com.worldwar.backend.Messages;
+import com.worldwar.backend.ProcessResult;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
-public class HandshakeProcessor extends Processor{
+public class HandshakeProcessor extends Processor {
     public HandshakeProcessor(ConnectionStatus status) {
         super(status);
     }

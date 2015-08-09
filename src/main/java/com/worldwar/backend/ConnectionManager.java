@@ -2,6 +2,7 @@ package com.worldwar.backend;
 
 import java.util.Objects;
 
+import com.worldwar.backend.processor.HandshakeProcessor;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 

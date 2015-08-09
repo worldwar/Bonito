@@ -1,5 +1,7 @@
-package com.worldwar.backend;
+package com.worldwar.backend.processor;
 
+import com.worldwar.backend.ConnectionStatus;
+import com.worldwar.backend.ProcessResult;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
