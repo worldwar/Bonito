@@ -15,6 +15,7 @@ public class Processors {
         processors.put(MessageType.UNCHOKE, new UnchokeProcessor(status));
         processors.put(MessageType.INTERESTED, new InterestedProcessor(status));
         processors.put(MessageType.NOT_INTERESTED, new NotInterestedProcessor(status));
+        processors.put(MessageType.HAVE, new HaveProcessor(status));
         return processors;
     }
 }

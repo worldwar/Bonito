@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.worldwar.backend.Channels;
 import com.worldwar.backend.ConnectionStatus;
 import com.worldwar.backend.Messages;
+import com.worldwar.backend.PeerMessage;
 import com.worldwar.backend.ProcessResult;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,7 +15,7 @@ public class HandshakeProcessor extends Processor {
         super(status);
     }
 
-    public ProcessResult process(ChannelHandlerContext ctx, ByteBuf in) {
+    public ProcessResult process(PeerMessage message, ChannelHandlerContext ctx, ByteBuf in) {
         ProcessResult result = ProcessResult.IGNORE;
         byte[] reserved = new byte[Messages.RESERVED_LENGTH];
         byte[] hashInfo = new byte[Messages.HASH_INFO_LENGTH];

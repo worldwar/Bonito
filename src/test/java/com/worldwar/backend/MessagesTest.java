@@ -1,5 +1,6 @@
 package com.worldwar.backend;
 
+import com.google.common.primitives.Ints;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -94,5 +95,33 @@ public class MessagesTest {
     public void shouldGetRightTypeOfNotInterestedMessage() {
         MessageType type = Messages.type(1, new byte[] {3});
         assertThat(type, is(MessageType.NOT_INTERESTED));
+    }
+
+    @Test
+    public void haveMessageShouldHaveLengthFive() {
+        int index = 9;
+        PeerMessage have = Messages.have(index);
+        assertThat(have.getLength(), is(5));
+    }
+
+    @Test
+    public void notInterestedMessageShouldHaveTypeHave() {
+        int index = 9;
+        PeerMessage notInterested = Messages.have(index);
+        assertThat(notInterested.getType(), is(MessageType.HAVE));
+    }
+
+    @Test
+    public void shouldGetRightTypeOfHaveMessage() {
+        MessageType type = Messages.type(1, new byte[] {4});
+        assertThat(type, is(MessageType.HAVE));
+    }
+
+    @Test
+    public void haveMessageShouldHaveRightContent() {
+        int index = 9;
+        PeerMessage have = Messages.have(index);
+        int actual = Ints.fromByteArray(have.getContent());
+        assertThat(actual, is(index));
     }
 }

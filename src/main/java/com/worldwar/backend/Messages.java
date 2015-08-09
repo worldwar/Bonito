@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Ints;
 
 public class Messages {
     public static final String PROTOCOL_STRING = "BitTorrent protocol";
@@ -21,6 +22,7 @@ public class Messages {
         types.put((byte) 1, MessageType.UNCHOKE);
         types.put((byte) 2, MessageType.INTERESTED);
         types.put((byte) 3, MessageType.NOT_INTERESTED);
+        types.put((byte) 4, MessageType.HAVE);
     }
 
     private static byte[] peer_id() {
@@ -78,5 +80,10 @@ public class Messages {
 
     public static PeerMessage notInterested() {
         return new PeerMessage(1, new byte[]{3}, null, MessageType.NOT_INTERESTED);
+    }
+
+    public static PeerMessage have(int index) {
+        byte[] content = Ints.toByteArray(index);
+        return new PeerMessage(5, new byte[]{4}, content, MessageType.HAVE);
     }
 }

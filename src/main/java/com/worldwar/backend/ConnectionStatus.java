@@ -8,6 +8,9 @@ public class ConnectionStatus {
     private boolean peerInterested;
     private byte[] peerId;
     private byte[] hashInfo;
+    private int pieceCount;
+    private byte[] amBitField;
+    private byte[] peerBitField;
 
     ConnectionStatus() {
         handshakeDone = false;
@@ -17,6 +20,10 @@ public class ConnectionStatus {
         peerInterested = false;
         peerId = null;
         hashInfo = null;
+        pieceCount = 35;  //a fake number. Its value should come from meta info file.
+        int bitFieldLength = pieceCount / 8 + (pieceCount % 8 == 0 ? 0 : 1);
+        amBitField = new byte[bitFieldLength];
+        peerBitField = new byte[bitFieldLength];
     }
 
     public boolean handshakeDone() {
@@ -73,5 +80,33 @@ public class ConnectionStatus {
 
     public void setHashInfo(byte[] hashInfo) {
         this.hashInfo = hashInfo;
+    }
+
+    public byte[] getPeerBitField() {
+        return peerBitField;
+    }
+
+    public void setPeerBitField(byte[] peerBitField) {
+        this.peerBitField = peerBitField;
+    }
+
+    public byte[] getAmBitField() {
+        return amBitField;
+    }
+
+    public void setAmBitField(byte[] amBitField) {
+        this.amBitField = amBitField;
+    }
+
+    public int getPieceCount() {
+        return pieceCount;
+    }
+
+    public void setPieceCount(int pieceCount) {
+        this.pieceCount = pieceCount;
+    }
+
+    public void setPeerHave(int index) {
+        Bits.set(peerBitField, index);
     }
 }

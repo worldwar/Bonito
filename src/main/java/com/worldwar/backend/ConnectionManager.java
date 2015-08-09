@@ -24,7 +24,7 @@ public class ConnectionManager {
         if (processor == null) {
             dropConnect(ctx);
         } else {
-            ProcessResult result = processor.process(ctx, in);
+            ProcessResult result = processor.process(message, ctx, in);
             deal(result, ctx);
         }
     }
