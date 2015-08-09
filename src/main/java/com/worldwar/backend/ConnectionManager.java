@@ -1,32 +1,52 @@
 package com.worldwar.backend;
 
-import java.util.Objects;
+import java.util.HashMap;
 
 import com.worldwar.backend.processor.HandshakeProcessor;
+import com.worldwar.backend.processor.KeepAliveProcessor;
+import com.worldwar.backend.processor.Processor;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
 public class ConnectionManager {
     private ConnectionStatus status;
-    private HandshakeProcessor handshakeHandler;
-
+    private ProcessorResolver resolver;
     ConnectionManager() {
         status = new ConnectionStatus();
-        handshakeHandler = new HandshakeProcessor(status);
+        HashMap<Byte[], Processor> processors = new HashMap<>();
+        resolver = new ProcessorResolver(new HandshakeProcessor(status), new KeepAliveProcessor(status), processors);
     }
 
     public void handle(ChannelHandlerContext ctx, ByteBuf in) {
-        int length = in.readByte();
-        byte[] dst = new byte[length];
-        in.readBytes(dst, 0, length);
-        String protocol = new String(dst);
-        if (Objects.equals(protocol, Messages.PROTOCOL_STRING)) {
-            ProcessResult result = handshakeHandler.process(ctx, in);
-            deal(result, ctx);
+        PeerMessage message = readMessage(in);
+        preProcess(message, ctx);
+        process(message, ctx, in);
+    }
+
+    private void process(PeerMessage message, ChannelHandlerContext ctx, ByteBuf in) {
+        Processor processor = resolver.resolve(message);
+        if (processor == null) {
+            dropConnect(ctx);
         } else {
-            if (!status.handshakeDone()) {
-                dropConnect(ctx);
-            }
+            ProcessResult result = processor.process(ctx, in);
+            deal(result, ctx);
+        }
+    }
+
+    private void preProcess(PeerMessage message, ChannelHandlerContext ctx) {
+        if (!status.handshakeDone() && message.getType() != MessageType.HANDSHAKE) {
+            dropConnect(ctx);
+        }
+    }
+
+    private PeerMessage readMessage(ByteBuf in) {
+        int length = in.readByte();
+        if (length == 0) {
+            return Messages.keepAlive();
+        } else {
+            byte[] content = new byte[length];
+            in.readBytes(content, 0, length);
+            return Messages.message(length, content);
         }
     }
 

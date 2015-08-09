@@ -1,5 +1,7 @@
 package com.worldwar.backend;
 
+import java.util.Arrays;
+
 import com.google.common.primitives.Bytes;
 
 public class Messages {
@@ -19,5 +21,35 @@ public class Messages {
     public static byte[] handshake(byte[] hash_info) {
         byte[] length = new byte[] {(byte)PROTOCOL_STRING.length()};
         return Bytes.concat(length, PROTOCOL_STRING.getBytes(), RESERVED, hash_info, PEER_ID);
+    }
+
+    public static PeerMessage keepAlive() {
+        return new PeerMessage(0, null, null, MessageType.KEEP_ALIVE);
+    }
+
+    public static PeerMessage handshake() {
+        return new PeerMessage(PROTOCOL_STRING.length(), PROTOCOL_STRING.getBytes(), null, MessageType.HANDSHAKE);
+    }
+
+    public static PeerMessage message(int length, byte[] content) {
+        if (length == 0) {
+            return keepAlive();
+        } else if (content == null) {
+            return null;
+        } else if (Arrays.equals(content, PROTOCOL_STRING.getBytes())) {
+            return handshake();
+        } else {
+            return new PeerMessage(length, Arrays.copyOf(content, 1), Arrays.copyOfRange(content, 1, length), type(length, content));
+        }
+    }
+
+    public static MessageType type(int length, byte[] id) {
+        if (length == 0) {
+            return MessageType.KEEP_ALIVE;
+        } else if (Arrays.equals(id, PROTOCOL_STRING.getBytes())) {
+            return MessageType.HANDSHAKE;
+        } else {
+            return null;
+        }
     }
 }
