@@ -4,5 +4,6 @@ public enum MessageType {
     HANDSHAKE,
     KEEP_ALIVE,
     CHOKE,
-    UNCHOKE
+    UNCHOKE,
+    INTERESTED
 }

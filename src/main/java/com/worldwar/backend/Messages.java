@@ -19,6 +19,7 @@ public class Messages {
         types = new HashMap<>();
         types.put((byte) 0, MessageType.CHOKE);
         types.put((byte) 1, MessageType.UNCHOKE);
+        types.put((byte) 2, MessageType.INTERESTED);
     }
 
     private static byte[] peer_id() {
@@ -68,5 +69,9 @@ public class Messages {
 
     public static PeerMessage unchoke() {
         return new PeerMessage(1, new byte[]{1}, null, MessageType.UNCHOKE);
+    }
+
+    public static PeerMessage interested() {
+        return new PeerMessage(1, new byte[]{2}, null, MessageType.INTERESTED);
     }
 }

@@ -1,12 +1,7 @@
 package com.worldwar.backend;
 
-import java.util.HashMap;
-
-import com.worldwar.backend.processor.ChokeProcessor;
-import com.worldwar.backend.processor.HandshakeProcessor;
-import com.worldwar.backend.processor.KeepAliveProcessor;
 import com.worldwar.backend.processor.Processor;
-import com.worldwar.backend.processor.UnchokeProcessor;
+import com.worldwar.backend.processor.Processors;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -15,14 +10,7 @@ public class ConnectionManager {
     private ProcessorResolver resolver;
     ConnectionManager() {
         status = new ConnectionStatus();
-        HashMap<MessageType, Processor> processors = new HashMap<>();
-
-        processors.put(MessageType.HANDSHAKE, new HandshakeProcessor(status));
-        processors.put(MessageType.KEEP_ALIVE, new KeepAliveProcessor(status));
-        processors.put(MessageType.CHOKE, new ChokeProcessor(status));
-        processors.put(MessageType.UNCHOKE, new UnchokeProcessor(status));
-
-        resolver = new ProcessorResolver(processors);
+        resolver = new ProcessorResolver(Processors.all(status));
     }
 
     public void handle(ChannelHandlerContext ctx, ByteBuf in) {

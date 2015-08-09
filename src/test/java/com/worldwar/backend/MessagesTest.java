@@ -59,4 +59,22 @@ public class MessagesTest {
         MessageType type = Messages.type(1, new byte[] {1});
         assertThat(type, is(MessageType.UNCHOKE));
     }
+
+    @Test
+    public void interestedMessageShouldHaveLenghtOne() {
+        PeerMessage interested = Messages.interested();
+        assertThat(interested.getLength(), is(1));
+    }
+
+    @Test
+    public void interestedMessageShouldHaveTypeInterested() {
+        PeerMessage interested = Messages.interested();
+        assertThat(interested.getType(), is(MessageType.INTERESTED));
+    }
+
+    @Test
+    public void shouldGetRightTypeOfInterestedMessage() {
+        MessageType type = Messages.type(1, new byte[] {2});
+        assertThat(type, is(MessageType.INTERESTED));
+    }
 }
