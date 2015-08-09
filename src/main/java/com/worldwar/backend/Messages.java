@@ -1,6 +1,8 @@
 package com.worldwar.backend;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.google.common.primitives.Bytes;
 
@@ -11,6 +13,12 @@ public class Messages {
     public static final int RESERVED_LENGTH = 8;
     public static final int PEER_ID_LENGTH = 20;
     public static final int HASH_INFO_LENGTH = 20;
+    public static Map<Byte, MessageType> types;
+
+    static {
+        types = new HashMap<>();
+        types.put((byte) 0, MessageType.CHOKE);
+    }
 
     private static byte[] peer_id() {
         String prefix = "-BN0001-";
@@ -31,6 +39,10 @@ public class Messages {
         return new PeerMessage(PROTOCOL_STRING.length(), PROTOCOL_STRING.getBytes(), null, MessageType.HANDSHAKE);
     }
 
+    public static PeerMessage choke() {
+        return new PeerMessage(1, new byte[]{0}, null, MessageType.CHOKE);
+    }
+
     public static PeerMessage message(int length, byte[] content) {
         if (length == 0) {
             return keepAlive();
@@ -49,7 +61,7 @@ public class Messages {
         } else if (Arrays.equals(id, PROTOCOL_STRING.getBytes())) {
             return MessageType.HANDSHAKE;
         } else {
-            return null;
+            return types.get(id[0]);
         }
     }
 }

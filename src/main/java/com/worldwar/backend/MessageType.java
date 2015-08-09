@@ -2,5 +2,6 @@ package com.worldwar.backend;
 
 public enum MessageType {
     HANDSHAKE,
-    KEEP_ALIVE
+    KEEP_ALIVE,
+    CHOKE
 }

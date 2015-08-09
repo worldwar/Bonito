@@ -2,6 +2,7 @@ package com.worldwar.backend;
 
 import java.util.HashMap;
 
+import com.worldwar.backend.processor.ChokeProcessor;
 import com.worldwar.backend.processor.HandshakeProcessor;
 import com.worldwar.backend.processor.KeepAliveProcessor;
 import com.worldwar.backend.processor.Processor;
@@ -13,8 +14,13 @@ public class ConnectionManager {
     private ProcessorResolver resolver;
     ConnectionManager() {
         status = new ConnectionStatus();
-        HashMap<Byte[], Processor> processors = new HashMap<>();
-        resolver = new ProcessorResolver(new HandshakeProcessor(status), new KeepAliveProcessor(status), processors);
+        HashMap<MessageType, Processor> processors = new HashMap<>();
+
+        processors.put(MessageType.HANDSHAKE, new HandshakeProcessor(status));
+        processors.put(MessageType.KEEP_ALIVE, new KeepAliveProcessor(status));
+        processors.put(MessageType.CHOKE, new ChokeProcessor(status));
+
+        resolver = new ProcessorResolver(processors);
     }
 
     public void handle(ChannelHandlerContext ctx, ByteBuf in) {
