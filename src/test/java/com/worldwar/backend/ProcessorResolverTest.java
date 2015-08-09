@@ -7,6 +7,7 @@ import com.worldwar.backend.processor.ChokeProcessor;
 import com.worldwar.backend.processor.HandshakeProcessor;
 import com.worldwar.backend.processor.KeepAliveProcessor;
 import com.worldwar.backend.processor.Processor;
+import com.worldwar.backend.processor.UnchokeProcessor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,7 @@ public class ProcessorResolverTest {
         processors.put(MessageType.HANDSHAKE, new HandshakeProcessor(null));
         processors.put(MessageType.KEEP_ALIVE, new KeepAliveProcessor(null));
         processors.put(MessageType.CHOKE, new ChokeProcessor(null));
+        processors.put(MessageType.UNCHOKE, new UnchokeProcessor(null));
         resolver = new ProcessorResolver(processors);
     }
 
@@ -41,5 +43,11 @@ public class ProcessorResolverTest {
     public void shouldResolveChokeMessage() {
         PeerMessage message = Messages.choke();
         assertThat(resolver.resolve(message), instanceOf(ChokeProcessor.class));
+    }
+
+    @Test
+    public void shouldResolveUnchokeMessage() {
+        PeerMessage message = Messages.unchoke();
+        assertThat(resolver.resolve(message), instanceOf(UnchokeProcessor.class));
     }
 }

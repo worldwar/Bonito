@@ -6,7 +6,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class MessagesTest {
-
     @Test
     public void keepAliveMessageShouldHaveLengthZero() {
         PeerMessage message = Messages.keepAlive();
@@ -29,5 +28,35 @@ public class MessagesTest {
     public void handshakeMessageShouldHaveTypeHandshake() {
         PeerMessage handshake = Messages.handshake();
         assertThat(handshake.getType(), is(MessageType.HANDSHAKE));
+    }
+
+    @Test
+    public void chokeMessageShouldHaveLengthOne() {
+        PeerMessage choke = Messages.choke();
+        assertThat(choke.getLength(), is(1));
+    }
+
+    @Test
+    public void chokeMessageShouldHaveTypeChoke() {
+        PeerMessage choke = Messages.choke();
+        assertThat(choke.getType(), is(MessageType.CHOKE));
+    }
+
+    @Test
+    public void unchokeMessageShouldHaveLengthOne() {
+        PeerMessage unchoke = Messages.unchoke();
+        assertThat(unchoke.getLength(), is(1));
+    }
+
+    @Test
+    public void unchokeMessageShouldHaveTypeUnchoke() {
+        PeerMessage unchoke = Messages.unchoke();
+        assertThat(unchoke.getType(), is(MessageType.UNCHOKE));
+    }
+
+    @Test
+    public void shouldGetRightTypeOfUnchokeMessage() {
+        MessageType type = Messages.type(1, new byte[] {1});
+        assertThat(type, is(MessageType.UNCHOKE));
     }
 }

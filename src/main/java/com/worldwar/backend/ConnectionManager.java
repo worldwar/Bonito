@@ -6,6 +6,7 @@ import com.worldwar.backend.processor.ChokeProcessor;
 import com.worldwar.backend.processor.HandshakeProcessor;
 import com.worldwar.backend.processor.KeepAliveProcessor;
 import com.worldwar.backend.processor.Processor;
+import com.worldwar.backend.processor.UnchokeProcessor;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -19,6 +20,7 @@ public class ConnectionManager {
         processors.put(MessageType.HANDSHAKE, new HandshakeProcessor(status));
         processors.put(MessageType.KEEP_ALIVE, new KeepAliveProcessor(status));
         processors.put(MessageType.CHOKE, new ChokeProcessor(status));
+        processors.put(MessageType.UNCHOKE, new UnchokeProcessor(status));
 
         resolver = new ProcessorResolver(processors);
     }
