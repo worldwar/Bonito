@@ -1,5 +1,7 @@
 package com.worldwar.backend;
 
+import java.util.function.Predicate;
+
 public class Bits {
     public static void set(byte[] value, int index) {
         //index = 0 refers to the high bit of first byte.
@@ -26,5 +28,30 @@ public class Bits {
         int byteIndex = index / 8;
         byte b = value[byteIndex];
         return (byte) (b & (1 << bitIndex)) != 0;
+    }
+
+    /***
+     * test a range of bit in the value satisfy the predicate.
+     * the range is indicated by two indexes: start(included) and end(excluded).
+     * index 0 indicates the high bit of first byte of value,
+     * index value.length * 8 - 1 indicates the low bit of last byte of value.
+     *
+     * the value of the certain bit will converted to a boolean as the argument of the predicate
+     * 0 is converted to false, and 1 is converted to true.
+     *
+     * @param value bytes to be tested
+     * @param start index of first bit to be tested in value
+     * @param end index of the bit next to the last bit tested in value
+     * @param predicate function to test on a certain bit
+     * @return true if all bits of value in the range satisfy the predicate, false if at last one
+     * bits of value in the range don't satisfy the predicate
+     */
+    public static boolean every(byte[] value, int start, int end, Predicate<Boolean> predicate) {
+        for (int i = start; i < end; i++) {
+            if (!predicate.test(Bits.test(value, i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

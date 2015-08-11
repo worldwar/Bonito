@@ -94,4 +94,16 @@ public class BitsTest {
         byte[] b = new byte[]{0b00000001, (byte)0b01000011};
         assertThat(Bits.test(b, 15), is(true));
     }
+
+    @Test
+    public void shouldReturnTrueIfAllBitsInRangeSatisfyThePredicate() {
+        byte[] value = new byte[]{0b00000000, 0b00001111};
+        assertThat(Bits.every(value, 0, 12, (b) -> !b), is(true));
+    }
+
+    @Test
+    public void shouldReturnFalseIfNotAllBitsInRangeSatisfyThePredicate() {
+        byte[] value = new byte[]{0b00000000, 0b00001111};
+        assertThat(Bits.every(value, 0, 13, (b) -> !b), is(false));
+    }
 }

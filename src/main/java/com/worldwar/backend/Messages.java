@@ -23,6 +23,7 @@ public class Messages {
         types.put((byte) 2, MessageType.INTERESTED);
         types.put((byte) 3, MessageType.NOT_INTERESTED);
         types.put((byte) 4, MessageType.HAVE);
+        types.put((byte) 5, MessageType.BITFIELD);
     }
 
     private static byte[] peer_id() {
@@ -85,5 +86,9 @@ public class Messages {
     public static PeerMessage have(int index) {
         byte[] content = Ints.toByteArray(index);
         return new PeerMessage(5, new byte[]{4}, content, MessageType.HAVE);
+    }
+
+    public static PeerMessage bitField(byte[] bytes) {
+        return new PeerMessage(bytes.length + 1, new byte[]{5}, bytes, MessageType.BITFIELD);
     }
 }

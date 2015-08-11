@@ -1,5 +1,6 @@
 package com.worldwar.backend;
 
+import com.worldwar.backend.processor.BitFieldProcessor;
 import com.worldwar.backend.processor.ChokeProcessor;
 import com.worldwar.backend.processor.HandshakeProcessor;
 import com.worldwar.backend.processor.HaveProcessor;
@@ -62,5 +63,12 @@ public class ProcessorResolverTest {
     public void shouldResolveHaveMessage() {
         PeerMessage message = Messages.have(0);
         assertThat(resolver.resolve(message), instanceOf(HaveProcessor.class));
+    }
+
+    @Test
+    public void shouldResolveBitFieldMessage() {
+        byte[] bytes = new byte[10];
+        PeerMessage message = Messages.bitField(bytes);
+        assertThat(resolver.resolve(message), instanceOf(BitFieldProcessor.class));
     }
 }

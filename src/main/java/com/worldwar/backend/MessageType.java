@@ -7,5 +7,6 @@ public enum MessageType {
     UNCHOKE,
     INTERESTED,
     NOT_INTERESTED,
-    HAVE
+    HAVE,
+    BITFIELD
 }

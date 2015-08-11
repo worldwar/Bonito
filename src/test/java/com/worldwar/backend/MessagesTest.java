@@ -124,4 +124,11 @@ public class MessagesTest {
         int actual = Ints.fromByteArray(have.getContent());
         assertThat(actual, is(index));
     }
+
+    @Test
+    public void bitFieldMessageShouldHaveRightType() {
+        byte[] bytes = new  byte[10];
+        PeerMessage bitField = Messages.bitField(bytes);
+        assertThat(bitField.getType(), is(MessageType.BITFIELD));
+    }
 }
