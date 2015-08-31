@@ -16,6 +16,12 @@ public class PeerHandler extends ByteToMessageDecoder {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        int x = 0;
+        System.out.println(x);
         manager.dropConnect(ctx);
+    }
+
+    @Override
+    protected void decodeLast(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
     }
 }

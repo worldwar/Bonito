@@ -2,6 +2,8 @@ package com.worldwar.backend;
 
 import com.worldwar.backend.processor.Processor;
 import com.worldwar.backend.processor.Processors;
+import com.worldwar.backend.task.KeepAliveTimerTask;
+import com.worldwar.backend.task.TaskScheduler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -49,11 +51,15 @@ public class ConnectionManager {
     private void deal(ProcessResult result, ChannelHandlerContext ctx) {
         switch (result.getType()) {
             case HANDSHAKE_DONE:
-                status.setHandshakeDone(true);
-                Channels.write(ctx, result.getValue());
+                startKeepAliveTimer(ctx);
+                break;
             case DROP_CONNECTION:
                 dropConnect(ctx);
         }
+    }
+
+    private void startKeepAliveTimer(ChannelHandlerContext ctx) {
+        TaskScheduler.getInstance().schedule(new KeepAliveTimerTask(ctx), 1);
     }
 
     public void dropConnect(ChannelHandlerContext ctx) {

@@ -7,6 +7,7 @@ import com.worldwar.backend.ConnectionStatus;
 import com.worldwar.backend.Messages;
 import com.worldwar.backend.PeerMessage;
 import com.worldwar.backend.ProcessResult;
+import com.worldwar.backend.ProcessResultType;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -36,6 +37,7 @@ public class HandshakeProcessor extends Processor {
             Channels.write(ctx, Messages.handshake(hashInfo));
             in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
             status.setPeerId(peerId);
+            return new ProcessResult(ProcessResultType.HANDSHAKE_DONE, null);
         }
         return result;
     }

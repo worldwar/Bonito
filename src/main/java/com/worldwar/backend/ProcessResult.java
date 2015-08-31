@@ -7,7 +7,7 @@ public class ProcessResult {
     private ProcessResultType type;
     private byte[] value;
 
-    ProcessResult(ProcessResultType type, byte[] value) {
+    public ProcessResult(ProcessResultType type, byte[] value) {
         this.type = type;
         this.value = value;
     }
@@ -27,12 +27,4 @@ public class ProcessResult {
     public void setValue(byte[] value) {
         this.value = value;
     }
-}
-
-enum ProcessResultType {
-    IGNORE,
-    UNKNOWN,
-    RESPONSE,
-    DROP_CONNECTION,
-    HANDSHAKE_DONE
 }

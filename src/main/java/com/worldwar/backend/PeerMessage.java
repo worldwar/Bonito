@@ -44,4 +44,10 @@ public class PeerMessage {
     public void setType(MessageType type) {
         this.type = type;
     }
+
+    //return human-friendly string to make test easier
+    //would be bytes contain id + content
+    public byte[] raw() {
+        return "Hello, World!".getBytes();
+    }
 }
