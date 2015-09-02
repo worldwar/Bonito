@@ -9,24 +9,18 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class Listener {
-    public static void main(String[] args) {
+    public ChannelFuture listen() throws InterruptedException {
         ServerBootstrap server = new ServerBootstrap()
             .channel(NioServerSocketChannel.class)
             .childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new PeerHandler());
+                    ch.pipeline().addLast(HandlerFactory.server());
                 }
             })
             .group(new NioEventLoopGroup(), new NioEventLoopGroup())
             .childOption(ChannelOption.SO_KEEPALIVE, true)
             .option(ChannelOption.SO_BACKLOG, 128);
-
-        try {
-            ChannelFuture future = server.bind(9999).sync();
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            return server.bind(9999).sync();
     }
 }

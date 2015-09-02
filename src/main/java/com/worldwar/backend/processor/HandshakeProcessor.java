@@ -34,7 +34,7 @@ public class HandshakeProcessor extends Processor {
         } else {
             status.setHandshakeDone(true);
             status.setHashInfo(hashInfo);
-            Channels.write(ctx, Messages.handshake(hashInfo));
+            Channels.write(ctx, Messages.handshake(hashInfo).raw());
             in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
             status.setPeerId(peerId);
             return new ProcessResult(ProcessResultType.HANDSHAKE_DONE, null);

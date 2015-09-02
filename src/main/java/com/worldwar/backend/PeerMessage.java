@@ -1,5 +1,7 @@
 package com.worldwar.backend;
 
+import com.worldwar.utility.Lists;
+
 public class PeerMessage {
     private int length;
     private byte[] id;
@@ -45,9 +47,7 @@ public class PeerMessage {
         this.type = type;
     }
 
-    //return human-friendly string to make test easier
-    //would be bytes contain id + content
     public byte[] raw() {
-        return "Hello, World!".getBytes();
+        return Lists.concat(new byte[] {(byte) length}, id, content);
     }
 }

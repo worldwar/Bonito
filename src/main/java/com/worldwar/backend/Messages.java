@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
+import com.worldwar.utility.Lists;
 
 public class Messages {
     public static final String PROTOCOL_STRING = "BitTorrent protocol";
+    public static final byte[] FAKE_HASH_INFO = "AAAAABBBBBCCCCCDDDDD".getBytes();
     public static final byte[] PEER_ID = peer_id();
     public static final byte[] RESERVED = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
     public static final int RESERVED_LENGTH = 8;
@@ -32,17 +33,17 @@ public class Messages {
         return result.getBytes();
     }
 
-    public static byte[] handshake(byte[] hash_info) {
-        byte[] length = new byte[] {(byte)PROTOCOL_STRING.length()};
-        return Bytes.concat(length, PROTOCOL_STRING.getBytes(), RESERVED, hash_info, PEER_ID);
-    }
-
     public static PeerMessage keepAlive() {
         return new PeerMessage(0, null, null, MessageType.KEEP_ALIVE);
     }
 
     public static PeerMessage handshake() {
         return new PeerMessage(PROTOCOL_STRING.length(), PROTOCOL_STRING.getBytes(), null, MessageType.HANDSHAKE);
+    }
+
+    public static PeerMessage handshake(byte[] hash_info) {
+        byte[] content = Lists.concat(RESERVED, hash_info, PEER_ID);
+        return new PeerMessage(PROTOCOL_STRING.length(), PROTOCOL_STRING.getBytes(), content, MessageType.HANDSHAKE);
     }
 
     public static PeerMessage choke() {

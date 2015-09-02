@@ -65,4 +65,8 @@ public class ConnectionManager {
     public void dropConnect(ChannelHandlerContext ctx) {
         ctx.channel().close();
     }
+
+    public ConnectionStatus getStatus() {
+        return status;
+    }
 }
