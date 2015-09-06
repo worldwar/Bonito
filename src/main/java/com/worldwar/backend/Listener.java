@@ -9,6 +9,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class Listener {
+    private NioEventLoopGroup bossGroup = new NioEventLoopGroup();
+    private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+
     public ChannelFuture listen() throws InterruptedException {
         ServerBootstrap server = new ServerBootstrap()
             .channel(NioServerSocketChannel.class)
@@ -18,9 +21,14 @@ public class Listener {
                     ch.pipeline().addLast(HandlerFactory.server());
                 }
             })
-            .group(new NioEventLoopGroup(), new NioEventLoopGroup())
+            .group(bossGroup, workerGroup)
             .childOption(ChannelOption.SO_KEEPALIVE, true)
             .option(ChannelOption.SO_BACKLOG, 128);
             return server.bind(9999).sync();
+    }
+
+    public void shutdownGracefully() {
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
     }
 }

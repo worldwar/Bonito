@@ -19,6 +19,7 @@ public class PeerHandler extends ByteToMessageDecoder {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        manager.init(ctx);
         if (type == HANDLER_TYPE_CLIENT) {
             new SendMessageTask(ctx, Messages.handshake(Messages.FAKE_HASH_INFO)).call();
         }

@@ -11,8 +11,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class Connector {
+    private EventLoopGroup group = new NioEventLoopGroup();
+
     public ChannelFuture connect(String address, int port) throws InterruptedException {
-        EventLoopGroup group = new NioEventLoopGroup();
             Bootstrap b = new Bootstrap();
             b.group(group)
                 .channel(NioSocketChannel.class)
@@ -25,5 +26,9 @@ public class Connector {
                     }
                 });
         return b.connect(address, port).sync();
+    }
+
+    public void shutdownGracefully() {
+        group.shutdownGracefully();
     }
 }
