@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import com.worldwar.bencoding.BEncoding;
-import com.worldwar.bencoding.BObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -192,5 +190,20 @@ public class BEncodingTest {
         String encode = BEncoding.encode(object);
         BObject anotherObject = BEncoding.decode(encode);
         assertThat(object, is(anotherObject));
+    }
+    @Test
+    public void encodingOfDictionaryShouldSortedByKeys() {
+        Map<String, String> map = new HashMap<>();
+        map.put("b", "bcd");
+        map.put("a", "ab");
+        map.put("c", "fff");
+        assertThat(BEncoding.encode(map), is(BENCODING_STRING_MAP));
+
+        map.clear();
+
+        map.put("c", "fff");
+        map.put("b", "bcd");
+        map.put("a", "ab");
+        assertThat(BEncoding.encode(map), is(BENCODING_STRING_MAP));
     }
 }

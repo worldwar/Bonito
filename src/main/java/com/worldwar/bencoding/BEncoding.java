@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -131,13 +128,29 @@ public class BEncoding {
         }
     }
 
-    static class BDictionaryEncoder implements BEncoder<Map<String, Object>> {
+    static class BDictionaryEncoder implements BEncoder<Map<Object, Object>> {
         @Override
-        public String encode(Map<String, Object> source) {
-            return DICTIONARY_PREFIX + Joiner.on("").join(Iterables.transform(source.entrySet(), this::encode)) + SUFFIX;
+        public String encode(Map<Object, Object> source) {
+            List<Map.Entry<Object, Object>> entries = new ArrayList<>();
+            entries.addAll(source.entrySet());
+            Collections.sort(entries, new Comparator<Map.Entry<Object, Object>>() {
+                @Override
+                public int compare(Map.Entry<Object, Object> o1, Map.Entry<Object, Object> o2) {
+                    if (o1.getKey() instanceof String) {
+                        String k1 = (String)o1.getKey();
+                        String k2 = (String)o2.getKey();
+                        return k1.compareTo(k2);
+                    } else if (o1.getKey() instanceof BObject) {
+                        return ((BObject)o1.getKey()).compareTo((BObject)o2.getKey());
+                    }
+                    return 0;
+                }
+            });
+            Iterable<String> transform = Iterables.transform(entries, this::encode);
+            return DICTIONARY_PREFIX + Joiner.on("").join(transform) + SUFFIX;
         }
 
-        String encode(Map.Entry<String, Object> element) {
+        String encode(Map.Entry<Object, Object> element) {
             return BEncoding.encode(element.getKey()) + BEncoding.encode(element.getValue());
         }
     }

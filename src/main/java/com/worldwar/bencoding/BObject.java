@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BObject {
+public class BObject implements Comparable<BObject> {
     private BType type;
     private Object value;
 
@@ -74,5 +74,14 @@ public class BObject {
             result.put(element.getKey().normalize(), element.getValue().normalize());
         }
         return result;
+    }
+
+    @Override
+    public int compareTo(BObject o) {
+        switch (type) {
+            case INTEGER: return ((Integer)this.value) - (Integer)o.value;
+            case STRING: return ((String)this.value).compareTo(o.value.toString());
+        }
+        return 0;
     }
 }
