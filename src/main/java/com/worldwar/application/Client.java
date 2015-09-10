@@ -5,7 +5,7 @@ import io.netty.channel.ChannelFuture;
 
 public class Client {
     public static void main(String[] args) throws InterruptedException {
-        ChannelFuture future = new Connector().connect("localhost", 9999);
+        ChannelFuture future = Connector.connect("localhost", 9999);
         future.channel().closeFuture().sync();
     }
 }

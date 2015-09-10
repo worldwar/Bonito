@@ -1,5 +1,6 @@
 package com.worldwar.backend;
 
+import java.util.List;
 import java.util.Random;
 
 public class Randoms {
@@ -11,5 +12,10 @@ public class Randoms {
             result.append(value);
         }
         return result.toString();
+    }
+
+    public static <T> T pick(List<T> collection) {
+        int index = random.nextInt(collection.size());
+        return collection.get(index);
     }
 }

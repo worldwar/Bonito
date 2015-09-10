@@ -23,7 +23,6 @@ public class PeerMessageInteractiveTest {
     private PeerHandler serverHandler = HandlerFactory.server();
     private PeerHandler clientHandler = HandlerFactory.client();
     private Listener listener = new Listener();
-    private Connector connector = new Connector();
 
     @Before
     public void before() throws Exception {
@@ -35,12 +34,12 @@ public class PeerMessageInteractiveTest {
 
     @Test
     public void handshakeInteractiveTest() throws Exception {
-        listener.listen();
+        listener.listen(9999);
 
         assertThat(serverHandler.getConnectionManager().getStatus().handshakeDone(), is(false));
         assertThat(clientHandler.getConnectionManager().getStatus().handshakeDone(), is(false));
 
-        connector.connect("localhost", 9999);
+        Connector.connect("localhost", 9999);
         Thread.sleep(1000);
 
         assertThat(serverHandler.getConnectionManager().getStatus().handshakeDone(), is(true));
@@ -49,12 +48,12 @@ public class PeerMessageInteractiveTest {
 
     @Test
     public void unchokeAndInterestedInteractiveTest() throws InterruptedException {
-        listener.listen();
+        listener.listen(9999);
 
         assertThat(serverHandler.getConnectionManager().getStatus().peerChoking(), is(true));
         assertThat(serverHandler.getConnectionManager().getStatus().peerInterested(), is(false));
 
-        connector.connect("localhost", 9999);
+        Connector.connect("localhost", 9999);
         Thread.sleep(1000);
 
         assertThat(serverHandler.getConnectionManager().getStatus().peerChoking(), is(false));
@@ -62,8 +61,9 @@ public class PeerMessageInteractiveTest {
     }
 
     @After
-    public void after() {
-        connector.shutdownGracefully();
+    public void after() throws InterruptedException {
+        Connector.shutdownGracefully();
         listener.shutdownGracefully();
+        Thread.sleep(1000);
     }
 }

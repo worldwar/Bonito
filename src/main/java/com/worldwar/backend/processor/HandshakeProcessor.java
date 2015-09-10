@@ -39,6 +39,7 @@ public class HandshakeProcessor extends Processor {
             status.setPeerId(peerId);
             return new ProcessResult(ProcessResultType.HANDSHAKE_DONE, null);
         }
+        System.out.println("handshake - remote peer id: " + new String(peerId));
         return result;
     }
 }

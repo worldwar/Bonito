@@ -12,7 +12,7 @@ public class Listener {
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup();
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
-    public ChannelFuture listen() throws InterruptedException {
+    public ChannelFuture listen(int port) throws InterruptedException {
         ServerBootstrap server = new ServerBootstrap()
             .channel(NioServerSocketChannel.class)
             .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -24,7 +24,7 @@ public class Listener {
             .group(bossGroup, workerGroup)
             .childOption(ChannelOption.SO_KEEPALIVE, true)
             .option(ChannelOption.SO_BACKLOG, 128);
-            return server.bind(9999).sync();
+            return server.bind(port).sync();
     }
 
     public void shutdownGracefully() {
