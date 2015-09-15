@@ -67,13 +67,17 @@ public class Metainfo {
     public void setInfo(Info info) {
         this.info = info;
     }
+
+    public long size() {
+        return info.getLength();
+    }
 }
 
 class Info {
     private String name;
     private int pieceLength;
     private List<byte[]> pieces;
-    private int length;
+    private long length;
     private List<PathLength> files;
 
     public String getName() {
@@ -100,11 +104,11 @@ class Info {
         this.pieces = pieces;
     }
 
-    public int getLength() {
+    public long getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(long length) {
         this.length = length;
     }
 
@@ -119,7 +123,7 @@ class Info {
 
 class PathLength {
     private List<String> path;
-    private int length;
+    private long length;
 
     public List<String> getPath() {
         return path;
@@ -129,7 +133,7 @@ class PathLength {
         this.path = path;
     }
 
-    public int getLength() {
+    public long getLength() {
         return length;
     }
 

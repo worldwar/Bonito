@@ -40,4 +40,8 @@ public class TorrentUnit {
     public void setTargetPath(String targetPath) {
         this.targetPath = targetPath;
     }
+
+    public long targetSize() {
+        return metainfo.size();
+    }
 }

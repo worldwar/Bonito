@@ -12,3 +12,4 @@ gradlew*
 *.data
 *.war
 *.log
+tmp/
