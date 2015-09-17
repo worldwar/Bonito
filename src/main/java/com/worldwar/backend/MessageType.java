@@ -8,5 +8,6 @@ public enum MessageType {
     INTERESTED,
     NOT_INTERESTED,
     HAVE,
-    BITFIELD
+    BITFIELD,
+    REQUEST
 }

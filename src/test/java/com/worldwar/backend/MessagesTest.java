@@ -3,8 +3,10 @@ package com.worldwar.backend;
 import com.google.common.primitives.Ints;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class MessagesTest {
     @Test
@@ -127,8 +129,30 @@ public class MessagesTest {
 
     @Test
     public void bitFieldMessageShouldHaveRightType() {
-        byte[] bytes = new  byte[10];
+        byte[] bytes = new byte[10];
         PeerMessage bitField = Messages.bitField(bytes);
         assertThat(bitField.getType(), is(MessageType.BITFIELD));
+    }
+
+    @Test
+    public void shouldGetRightTypeOfRequestMessage() {
+        MessageType type = Messages.type(13, new byte[] {6});
+        assertThat(type, is(MessageType.REQUEST));
+    }
+
+    @Test
+    public void requestMessageShouldHaveRightContent() {
+        int index = 14;
+        int begin = 300;
+        int length = 1024 * 8;
+        PeerMessage request = Messages.request(index, begin, length);
+        byte[] content = request.getContent();
+        byte[] indexBytes = Arrays.copyOfRange(content, 0, 4);
+        byte[] beginBytes = Arrays.copyOfRange(content, 4, 8);
+        byte[] lengthBytes = Arrays.copyOfRange(content, 8, 12);
+
+        assertThat(Ints.fromByteArray(indexBytes), is(index));
+        assertThat(Ints.fromByteArray(beginBytes), is(begin));
+        assertThat(Ints.fromByteArray(lengthBytes), is(length));
     }
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.primitives.Bytes;
 import com.google.common.primitives.Ints;
 import com.worldwar.utility.Lists;
 
@@ -25,6 +26,7 @@ public class Messages {
         types.put((byte) 3, MessageType.NOT_INTERESTED);
         types.put((byte) 4, MessageType.HAVE);
         types.put((byte) 5, MessageType.BITFIELD);
+        types.put((byte) 6, MessageType.REQUEST);
     }
 
     private static byte[] peer_id() {
@@ -91,5 +93,10 @@ public class Messages {
 
     public static PeerMessage bitField(byte[] bytes) {
         return new PeerMessage(bytes.length + 1, new byte[]{5}, bytes, MessageType.BITFIELD);
+    }
+
+    public static PeerMessage request(int index, int begin, int length) {
+        byte[] bytes = Bytes.concat(Ints.toByteArray(index), Ints.toByteArray(begin), Ints.toByteArray(length));
+        return new PeerMessage(13, new byte[]{6}, bytes, MessageType.REQUEST);
     }
 }

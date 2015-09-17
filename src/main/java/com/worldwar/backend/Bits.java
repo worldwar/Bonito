@@ -1,5 +1,9 @@
 package com.worldwar.backend;
 
+import com.google.common.primitives.Ints;
+import com.worldwar.utility.Numbers;
+
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class Bits {
@@ -53,5 +57,22 @@ public class Bits {
             }
         }
         return true;
+    }
+
+    public static int[] ints(byte[] bytes) {
+        int size = bytes.length;
+        int range = 4;
+        int count = Numbers.times(size, range);
+        int[] result = new int[count];
+
+        for (int i = 0; i < count; i++) {
+            int to = ((i + 1) * range) > size ? size : (i + 1) * range;
+            result[i] = intValue(bytes, i * range, to);
+        }
+        return result;
+    }
+
+    public static int intValue(byte[] bytes, int from, int to) {
+        return Ints.fromByteArray(Arrays.copyOfRange(bytes, from, to));
     }
 }

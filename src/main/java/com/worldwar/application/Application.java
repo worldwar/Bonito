@@ -13,7 +13,7 @@ public class Application {
         System.out.println("peer id: " + new String(Messages.PEER_ID));
         ChannelFuture future = new Listener().listen(9999);
         TorrentContext context = TorrentContexts.make();
-        context.start();
+//        context.start();
         future.channel().closeFuture().sync();
     }
 }

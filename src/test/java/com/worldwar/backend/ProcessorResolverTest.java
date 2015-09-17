@@ -1,14 +1,6 @@
 package com.worldwar.backend;
 
-import com.worldwar.backend.processor.BitFieldProcessor;
-import com.worldwar.backend.processor.ChokeProcessor;
-import com.worldwar.backend.processor.HandshakeProcessor;
-import com.worldwar.backend.processor.HaveProcessor;
-import com.worldwar.backend.processor.InterestedProcessor;
-import com.worldwar.backend.processor.KeepAliveProcessor;
-import com.worldwar.backend.processor.NotInterestedProcessor;
-import com.worldwar.backend.processor.Processors;
-import com.worldwar.backend.processor.UnchokeProcessor;
+import com.worldwar.backend.processor.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,5 +62,11 @@ public class ProcessorResolverTest {
         byte[] bytes = new byte[10];
         PeerMessage message = Messages.bitField(bytes);
         assertThat(resolver.resolve(message), instanceOf(BitFieldProcessor.class));
+    }
+
+    @Test
+    public void shouldResolveRequestMessage() {
+        PeerMessage message = Messages.request(1, 2, 3);
+        assertThat(resolver.resolve(message), instanceOf(RequestProcessor.class));
     }
 }

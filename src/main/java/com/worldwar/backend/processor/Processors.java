@@ -17,6 +17,7 @@ public class Processors {
         processors.put(MessageType.NOT_INTERESTED, new NotInterestedProcessor(status));
         processors.put(MessageType.HAVE, new HaveProcessor(status));
         processors.put(MessageType.BITFIELD, new BitFieldProcessor(status));
+        processors.put(MessageType.REQUEST, new RequestProcessor(status));
         return processors;
     }
 }
