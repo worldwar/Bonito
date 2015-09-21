@@ -38,5 +38,6 @@ public class Connector {
 
     public static void shutdownGracefully() {
         group.shutdownGracefully();
+        bootstrap = null;
     }
 }
