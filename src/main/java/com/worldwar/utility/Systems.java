@@ -13,4 +13,18 @@ public class Systems {
         }
         return file;
     }
+
+    public static void write(File target, long offset, byte[] block) throws IOException {
+        try(RandomAccessFile file = new RandomAccessFile(target, "rw")) {
+            file.seek(offset);
+            file.write(block, 0, block.length);
+        }
+    }
+
+    public static int read(byte[] actual, File source, long offset, int length) throws IOException {
+        try(RandomAccessFile file = new RandomAccessFile(source, "r")) {
+            file.seek(offset);
+            return file.read(actual, 0, length);
+        }
+    }
 }

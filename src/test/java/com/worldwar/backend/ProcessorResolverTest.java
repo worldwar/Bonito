@@ -69,4 +69,10 @@ public class ProcessorResolverTest {
         PeerMessage message = Messages.request(1, 2, 3);
         assertThat(resolver.resolve(message), instanceOf(RequestProcessor.class));
     }
+
+    @Test
+    public void shouldResolvePieceMessage() {
+        PeerMessage message = Messages.piece(1, 2, new byte[]{3});
+        assertThat(resolver.resolve(message), instanceOf(PieceProcessor.class));
+    }
 }

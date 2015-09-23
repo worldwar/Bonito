@@ -14,6 +14,10 @@ public class TorrentContext {
     private TorrentUnit unit;
     private List<InetSocketAddress> peers;
     private File target;
+    private long targetSize;
+    private String targetPath;
+    private int pieceLength;
+    private byte[] hashinfo;
 
     public TorrentContext() {
         unit = new TorrentUnit();
@@ -21,7 +25,7 @@ public class TorrentContext {
     }
 
     public void start() throws IOException {
-        target = Systems.file(unit.getTargetPath(), unit.targetSize());
+        target = Systems.file(targetPath, targetSize);
         TaskScheduler.getInstance().emit(new ConnectTask(Randoms.pick(peers)));
         TorrentRegister.register(this);
     }
@@ -43,10 +47,38 @@ public class TorrentContext {
     }
 
     public byte[] hashinfo() {
-        return unit.getHashinfo();
+        return hashinfo;
     }
 
     public File getTarget() {
         return target;
+    }
+
+    public long getTargetSize() {
+        return targetSize;
+    }
+
+    public void setTargetSize(long targetSize) {
+        this.targetSize = targetSize;
+    }
+
+    public String getTargetPath() {
+        return targetPath;
+    }
+
+    public void setTargetPath(String targetPath) {
+        this.targetPath = targetPath;
+    }
+
+    public int getPieceLength() {
+        return pieceLength;
+    }
+
+    public void setPieceLength(int pieceLength) {
+        this.pieceLength = pieceLength;
+    }
+
+    public void setHashinfo(byte[] hashinfo) {
+        this.hashinfo = hashinfo;
     }
 }

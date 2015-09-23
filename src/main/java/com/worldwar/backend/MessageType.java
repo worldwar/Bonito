@@ -9,5 +9,6 @@ public enum MessageType {
     NOT_INTERESTED,
     HAVE,
     BITFIELD,
-    REQUEST
+    REQUEST,
+    PIECE
 }

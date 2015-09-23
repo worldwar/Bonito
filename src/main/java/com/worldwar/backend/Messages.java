@@ -27,6 +27,7 @@ public class Messages {
         types.put((byte) 4, MessageType.HAVE);
         types.put((byte) 5, MessageType.BITFIELD);
         types.put((byte) 6, MessageType.REQUEST);
+        types.put((byte) 7, MessageType.PIECE);
     }
 
     private static byte[] peer_id() {
@@ -98,5 +99,23 @@ public class Messages {
     public static PeerMessage request(int index, int begin, int length) {
         byte[] bytes = Bytes.concat(Ints.toByteArray(index), Ints.toByteArray(begin), Ints.toByteArray(length));
         return new PeerMessage(13, new byte[]{6}, bytes, MessageType.REQUEST);
+    }
+
+    public static PeerMessage piece(int index, int begin, byte[] piece) {
+        byte[] content = Bytes.concat(Ints.toByteArray(index), Ints.toByteArray(begin), piece);
+        return new PeerMessage(9 + piece.length, new byte[]{7}, content, MessageType.PIECE);
+    }
+
+    public static int indexOfPieceMessage(PeerMessage pieceMessage) {
+        return Ints.fromByteArray(Arrays.copyOfRange(pieceMessage.getContent(), 0, 4));
+    }
+
+    public static int beginOfPieceMessage(PeerMessage pieceMessage) {
+        return Ints.fromByteArray(Arrays.copyOfRange(pieceMessage.getContent(), 4, 8));
+    }
+
+    public static byte[] blockOfPieceMessage(PeerMessage pieceMessage) {
+        byte[] content = pieceMessage.getContent();
+        return Arrays.copyOfRange(content, 8, content.length);
     }
 }

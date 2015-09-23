@@ -155,4 +155,25 @@ public class MessagesTest {
         assertThat(Ints.fromByteArray(beginBytes), is(begin));
         assertThat(Ints.fromByteArray(lengthBytes), is(length));
     }
+
+    @Test
+    public void shouldGetRightTypeOfPieceMessage() {
+        int contentLength = 1024 * 16;
+        MessageType type = Messages.type(9 + contentLength, new byte[]{7});
+        assertThat(type, is(MessageType.PIECE));
+    }
+
+
+    @Test
+    public void pieceMessageShouldHaveRightContent() {
+        int index = 14;
+        int begin = 300;
+        int length = 1024 * 8;
+        byte[] block = new byte[length];
+        PeerMessage request = Messages.piece(index, begin, block);
+
+        assertThat(Messages.indexOfPieceMessage(request), is(index));
+        assertThat(Messages.beginOfPieceMessage(request), is(begin));
+        assertThat(Arrays.equals(block, Messages.blockOfPieceMessage(request)), is(true));
+    }
 }
