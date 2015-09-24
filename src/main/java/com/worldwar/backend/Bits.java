@@ -75,4 +75,12 @@ public class Bits {
     public static int intValue(byte[] bytes, int from, int to) {
         return Ints.fromByteArray(Arrays.copyOfRange(bytes, from, to));
     }
+
+    public static Predicate<Boolean> identity() {
+        return b -> b;
+    }
+
+    public static Predicate<Boolean> not() {
+        return b -> !b;
+    }
 }

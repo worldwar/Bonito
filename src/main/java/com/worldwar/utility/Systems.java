@@ -1,8 +1,15 @@
 package com.worldwar.utility;
 
+import com.google.common.hash.Hashing;
+import com.worldwar.backend.Bits;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class Systems {
     public static File file(String path, long size) throws IOException {
@@ -26,5 +33,45 @@ public class Systems {
             file.seek(offset);
             return file.read(actual, 0, length);
         }
+    }
+
+    public static byte[] calculateBitfield(File file, List<byte[]> pieces, int pieceLength) throws IOException {
+        byte[] result = new byte[Numbers.times(pieces.size(), 8)];
+        Iterator<byte[]> iterator = pieces.iterator();
+        int lastIndex = pieces.size() - 1;
+        int i;
+        int offset = 0;
+        for (i = 0; i <= lastIndex; offset += pieceLength, i++) {
+            byte[] hash = hash(file, offset, pieceLength);
+            byte[] piece = iterator.next();
+            if (Arrays.equals(hash, piece)) {
+                Bits.set(result, i);
+            }
+        }
+        return result;
+    }
+
+    public static List<byte[]> hashes(byte[] content, int pieceLength) {
+        int length = content.length;
+        int pieceCount = Numbers.times(length, pieceLength);
+        List<byte[]> result = new ArrayList<>(pieceCount);
+        int i;
+        int lastIndex = pieceCount - 1;
+        int offset = 0;
+        for (i = 0; i < lastIndex; offset += pieceLength, i++) {
+            result.add(hash(content, offset, pieceLength));
+        }
+        result.add(hash(content, offset, length - offset));
+        return result;
+    }
+
+    public static byte[] hash(byte[] content, int offset, int length) {
+        return Hashing.sha1().hashBytes(content, offset, length).asBytes();
+    }
+
+    public static byte[] hash(File file, int offset, int length) throws IOException {
+        byte[] content = new byte[length];
+        int actualLength = read(content, file, offset, length);
+        return Hashing.sha1().hashBytes(content, 0, actualLength).asBytes();
     }
 }

@@ -18,6 +18,8 @@ public class TorrentContext {
     private String targetPath;
     private int pieceLength;
     private byte[] hashinfo;
+    private byte[] bitfield;
+    private List<byte[]> pieces;
 
     public TorrentContext() {
         unit = new TorrentUnit();
@@ -26,6 +28,7 @@ public class TorrentContext {
 
     public void start() throws IOException {
         target = Systems.file(targetPath, targetSize);
+        bitfield = Systems.calculateBitfield(target, pieces, pieceLength);
         TaskScheduler.getInstance().emit(new ConnectTask(Randoms.pick(peers)));
         TorrentRegister.register(this);
     }

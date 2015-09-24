@@ -10,4 +10,8 @@ public class TorrentContexts {
         torrentContext.setPeers(Lists.newArrayList(new InetSocketAddress("localhost", 8888)));
         return torrentContext;
     }
+
+    public static boolean finished(byte[] bitfield, int pieceCount) {
+        return Bits.every(bitfield, 0, pieceCount, Bits.identity());
+    }
 }
