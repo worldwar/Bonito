@@ -2,6 +2,9 @@ package com.worldwar.utility;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
@@ -41,6 +44,20 @@ public class ListsTest {
 
     @Test
     public void couldConcatOneNullArray() {
-        assertThat(Lists.concat(null), is(emptyArray));
+        assertThat(Lists.concat(), is(emptyArray));
+    }
+
+    @Test
+    public void couldConcatArrayOfByteArray() {
+        byte[][] bytesArray = new byte[][]{firstArray, secondArray};
+        assertThat(Lists.concat(bytesArray), is(combinedTwo));
+    }
+
+    @Test
+    public void couldConcatListOfByteArray() {
+        List list = new ArrayList<>();
+        list.add(firstArray);
+        list.add(secondArray);
+        assertThat(Lists.concat(list), is(combinedTwo));
     }
 }

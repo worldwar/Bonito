@@ -16,6 +16,12 @@ public class Bits {
         value[byteIndex] = (byte) (b | (1 << bitIndex));
     }
 
+    public static void set(byte[] value, int start, int count) {
+        for (int index = start; index < start + count; index++) {
+            set(value, index);
+        }
+    }
+
     public static void clear(byte[] value, int index) {
         //index = 0 refers to the high bit of first byte.
         assert index >= 0 && index < value.length * 8;

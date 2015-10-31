@@ -1,7 +1,11 @@
 package com.worldwar.utility;
 
+import com.worldwar.Metainfo;
+import com.worldwar.Metainfos;
 import com.worldwar.backend.Bits;
+import com.worldwar.backend.Constants;
 import com.worldwar.backend.TorrentContexts;
+import com.worldwar.bencoding.BEncoding;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -121,5 +125,20 @@ public class SystemsTest {
             Bits.set(expectBitfield, i);
         }
         assertThat(Arrays.equals(bitfield, expectBitfield), is(true));
+    }
+
+    @Test
+    public void shouldGenerateRightMetainfo() throws IOException {
+        String filename = "animal.txt";
+        Metainfo metainfo = Metainfos.generateMetainfo(filename);
+        BEncoding.write("animal.torrent", Metainfos.bObject(metainfo));
+        List<byte[]> pieces = metainfo.pieces();
+        File file1 = new File(filename);
+        int pieceCount = Numbers.times((int) file1.length(), Constants.PIECE_LENGTH);
+        int byteCount = Numbers.times(pieceCount, 8);
+        byte[] bytes = Systems.calculateBitfield(file1, pieces, Constants.PIECE_LENGTH);
+        byte[] expect = new byte[byteCount];
+        Bits.set(expect, 0, pieceCount);
+        assertThat(Arrays.equals(bytes, expect), is(true));
     }
 }

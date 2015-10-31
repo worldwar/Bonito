@@ -1,5 +1,6 @@
 package com.worldwar.utility;
 
+import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.worldwar.backend.Bits;
 
@@ -69,9 +70,27 @@ public class Systems {
         return Hashing.sha1().hashBytes(content, offset, length).asBytes();
     }
 
-    public static byte[] hash(File file, int offset, int length) throws IOException {
+    public static byte[] hash(File file, long offset, int length) throws IOException {
+        return hashCode(file, offset, length).asBytes();
+    }
+
+    public static HashCode hashCode(File file, long offset, int length) throws IOException {
         byte[] content = new byte[length];
         int actualLength = read(content, file, offset, length);
-        return Hashing.sha1().hashBytes(content, 0, actualLength).asBytes();
+        return Hashing.sha1().hashBytes(content, 0, actualLength);
+    }
+
+    public static List<byte[]> pieces(File file, int pieceLength) throws IOException {
+        long length = file.length();
+        int pieceCount = (int)Numbers.times(length, pieceLength);
+        List<byte[]> result = new ArrayList<>(pieceCount);
+        int i;
+        long lastIndex = pieceCount - 1;
+        long offset = 0;
+        for (i = 0; i < lastIndex; offset += pieceLength, i++) {
+            result.add(hashCode(file, offset, pieceLength).asBytes());
+        }
+        result.add(hashCode(file, offset, (int) (length - offset)).asBytes());
+        return result;
     }
 }

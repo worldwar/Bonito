@@ -2,6 +2,8 @@ package com.worldwar.backend;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
@@ -105,5 +107,13 @@ public class BitsTest {
     public void shouldReturnFalseIfNotAllBitsInRangeSatisfyThePredicate() {
         byte[] value = new byte[]{0b00000000, 0b00001111};
         assertThat(Bits.every(value, 0, 13, (b) -> !b), is(false));
+    }
+
+    @Test
+    public void shouldSetRangeOfByte() {
+        byte[] origin = new byte[]{0b00000000, 0b00000000};
+        byte[] expect = new byte[]{0b00001111, (byte)0b11100000};
+        Bits.set(origin, 4, 7);
+        assertThat(Arrays.equals(origin, expect), is(true));
     }
 }

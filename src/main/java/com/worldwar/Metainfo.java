@@ -71,6 +71,10 @@ public class Metainfo {
     public long size() {
         return info.getLength();
     }
+
+    public List<byte[]> pieces() {
+        return info.getPieces();
+    }
 }
 
 class Info {

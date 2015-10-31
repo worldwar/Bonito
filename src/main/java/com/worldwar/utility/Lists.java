@@ -1,5 +1,8 @@
 package com.worldwar.utility;
 
+
+import java.util.List;
+
 public class Lists {
     public static byte[] concat(byte[]... byteArrays) {
         if (byteArrays == null) {
@@ -21,4 +24,14 @@ public class Lists {
         }
         return c;
     }
+
+    public static byte[] concat(List<byte[]> list) {
+        byte[][] objects = new byte[list.size()][];
+        int i = 0;
+        for (byte[] bytes : list) {
+            objects[i++] = bytes;
+        }
+        return concat(objects);
+    }
+
 }

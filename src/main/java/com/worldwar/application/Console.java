@@ -3,13 +3,14 @@ package com.worldwar.application;
 import com.worldwar.Metainfo;
 import com.worldwar.Metainfos;
 import com.worldwar.bencoding.BEncoding;
-import com.worldwar.bencoding.BObject;
 import com.worldwar.bencoding.BadBObjectException;
 
+import java.io.IOException;
+
 public class Console {
-    public static void main(String[] args) throws BadBObjectException {
-        BObject object = BEncoding.read("a.torrent");
-        Metainfo metainfo = Metainfos.metainfo(object);
-        System.out.println(object);
+    public static void main(String[] args) throws BadBObjectException, IOException {
+        Metainfo metainfo = Metainfos.generateMetainfo("elephant.jpg");
+        BEncoding.write("animal.torrent", Metainfos.bObject(metainfo));
+        System.out.println("finished");
     }
 }

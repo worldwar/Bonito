@@ -10,7 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 import static com.worldwar.bencoding.BType.DICTIONARY;
@@ -36,7 +39,10 @@ public class BEncoding {
             return new BDictionaryEncoder();
         } else if (source instanceof BObject) {
             return new BObjectEncoder();
-        } else {
+        } else if (source instanceof Long) {
+            return new BLongEncoder();
+        }
+        else {
             return null;
         }
     }
@@ -53,7 +59,7 @@ public class BEncoding {
     public static String encode(Object source) {
         BEncoder encoder = choose(source);
         if (encoder == null) {
-            throw new RuntimeException("UNSUPPORTED DATA TYPE");
+            throw new RuntimeException("UNSUPPORTED DATA TYPE: " + source);
         }
         return encoder.encode(source);
     }
@@ -121,6 +127,13 @@ public class BEncoding {
         }
     }
 
+    static class BLongEncoder implements BEncoder<Long> {
+        @Override
+        public String encode(Long source) {
+            return INTEGER_PREFIX + String.valueOf(source) + SUFFIX;
+        }
+    }
+
     static class BListEncoder implements BEncoder<List<Object>> {
         @Override
         public String encode(List<Object> source) {
@@ -146,7 +159,13 @@ public class BEncoding {
                     return 0;
                 }
             });
-            Iterable<String> transform = Iterables.transform(entries, this::encode);
+            FluentIterable f = FluentIterable.from(entries).filter(new Predicate<Map.Entry<Object, Object>>() {
+                @Override
+                public boolean apply(Map.Entry<Object, Object> input) {
+                    return input.getValue() != null;
+                }
+            }).transform(this::encode);
+            ImmutableList transform = f.toList();
             return DICTIONARY_PREFIX + Joiner.on("").join(transform) + SUFFIX;
         }
 

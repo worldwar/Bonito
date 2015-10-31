@@ -1,14 +1,13 @@
 package com.worldwar;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
-import com.worldwar.bencoding.BObject;
-import com.worldwar.bencoding.BType;
-import com.worldwar.bencoding.BadBObjectException;
+import com.worldwar.backend.Constants;
+import com.worldwar.bencoding.*;
+import com.worldwar.utility.Lists;
+import com.worldwar.utility.Systems;
 
 public class Metainfos {
     public static final String ANNOUNCE_KEY = "announce";
@@ -46,6 +45,40 @@ public class Metainfos {
         }
     }
 
+    public static BObject bObject(Metainfo metainfo) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(ANNOUNCE_KEY, metainfo.getAnnounce());
+        map.put(CREATED_BY_KEY, metainfo.getCreatedBy());
+        map.put(ANNOUNCE_LIST_KEY, metainfo.getAnnounces());
+        map.put(CREATION_DATE_KEY, (int)(metainfo.getCreationDate().getTime() / 1000));
+        map.put(COMMENT_KEY, metainfo.getComment());
+        Info info = metainfo.getInfo();
+
+        Map<String, Object> infoMap = new HashMap<>();
+        infoMap.put(INFO_NAME_KEY, info.getName());
+        infoMap.put(INFO_PIECE_LENGTH_KEY, info.getPieceLength());
+        infoMap.put(INFO_PIECES_KEY, new String(Lists.concat(info.getPieces())));
+
+        if (!metainfo.isDictionary()) {
+            infoMap.put(INFO_LENGTH_KEY, info.getLength());
+        } else {
+            List<PathLength> files = info.getFiles();
+            List<Map> fileList = new ArrayList<>();
+            for (PathLength pathLength : files) {
+                Map<String, Object> pathMap = new HashMap<>();
+
+                List<String> path = pathLength.getPath();
+                long length = pathLength.getLength();
+                pathMap.put(INFO_LENGTH_KEY, length);
+                pathMap.put(INFO_PATH_KEY, path);
+                fileList.add(pathMap);
+            }
+            infoMap.put(INFO_FILES_KEY, fileList);
+        }
+        map.put(INFO_KEY, infoMap);
+        return BObjects.dictionary(map);
+    }
+
     private static Info info(Map map) {
         Info info = new Info();
         info.setName((String)map.get(INFO_NAME_KEY));
@@ -77,5 +110,25 @@ public class Metainfos {
             result.add(range);
         }
         return result;
+    }
+
+    public static Metainfo generateMetainfo(String filename) throws IOException {
+        File file = new File(filename);
+
+        Metainfo metainfo = new Metainfo();
+        metainfo.setAnnounce("http://localhost:80/announce");
+        metainfo.setComment("This is a test torrent");
+        metainfo.setCreatedBy("Bonito-1.0.0");
+        metainfo.setCreationDate(new Date());
+        metainfo.setDictionary(false);
+
+        Info info = new Info();
+        info.setLength(file.length());
+        info.setName(file.getName());
+        info.setPieceLength(Constants.PIECE_LENGTH);
+        info.setPieces(Systems.pieces(file, Constants.PIECE_LENGTH));
+
+        metainfo.setInfo(info);
+        return metainfo;
     }
 }

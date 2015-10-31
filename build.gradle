@@ -17,6 +17,17 @@ dependencies {
     testCompile 'org.powermock:powermock-api-mockito:1.5.4'
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    afterSuite { desc, result ->
+        if (!desc.parent) { // will match the outermost suite
+            println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+        }
+    }
+}
+
 idea.workspace.iws.withXml { provider ->
     provider.node.component
             .find { it.@name == 'ProjectView' }
