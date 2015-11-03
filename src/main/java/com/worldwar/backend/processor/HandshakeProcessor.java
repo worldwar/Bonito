@@ -34,10 +34,17 @@ public class HandshakeProcessor extends Processor {
         } else {
             status.setHandshakeDone(true);
             status.setHashInfo(hashInfo);
-            Channels.write(ctx, Messages.handshake(hashInfo).raw());
-            in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
-            status.setPeerId(peerId);
-            return new ProcessResult(ProcessResultType.HANDSHAKE_DONE, null);
+            if (!status.handshakeSend()) {
+                byte[] raw = Messages.handshake(hashInfo).raw();
+                Channels.write(ctx, raw);
+                System.out.println("HANDSHAKE in loop: " + Arrays.toString(raw));
+                in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
+                status.setPeerId(peerId);
+                return new ProcessResult(ProcessResultType.HANDSHAKE_DONE, null);
+            } else {
+                in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
+                status.setPeerId(peerId);
+            }
         }
         System.out.println("handshake - remote peer id: " + new String(peerId));
         return result;

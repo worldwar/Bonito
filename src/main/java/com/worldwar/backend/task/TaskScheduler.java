@@ -27,6 +27,6 @@ public class TaskScheduler {
     }
 
     public void schedule(TimerTask timerTask, long seconds) {
-        timer.schedule(timerTask, 1000, seconds * 1000);
+        timer.schedule(timerTask, seconds * 1000, seconds * 1000);
     }
 }

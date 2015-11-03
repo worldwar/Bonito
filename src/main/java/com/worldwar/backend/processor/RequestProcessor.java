@@ -18,7 +18,7 @@ public class RequestProcessor extends Processor {
     public ProcessResult process(PeerMessage message, ChannelHandlerContext ctx, ByteBuf in) {
         byte[] content = message.getContent();
         int[] ints = Bits.ints(content);
-        TaskScheduler.getInstance().emit(new PieceTask(ints[0], ints[1], ints[2]));
+        TaskScheduler.getInstance().emit(new PieceTask(ints[0], ints[1], ints[2], status.getHashInfo(), ctx));
         System.out.println("request: index - " + ints[0] + ", begin - " + ints[1] + ", length - " + ints[2]);
         return ProcessResult.IGNORE;
     }

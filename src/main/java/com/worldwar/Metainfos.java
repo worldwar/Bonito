@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import com.google.common.base.Charsets;
 import com.worldwar.backend.Constants;
 import com.worldwar.bencoding.*;
 import com.worldwar.utility.Lists;
@@ -130,5 +131,38 @@ public class Metainfos {
 
         metainfo.setInfo(info);
         return metainfo;
+    }
+
+    public static byte[] hashinfo(Info info) {
+        Map<String, Object> infoMap = new HashMap<>();
+        infoMap.put(INFO_PIECE_LENGTH_KEY, info.getPieceLength());
+        infoMap.put(INFO_PIECES_KEY, new String(Lists.concat(info.getPieces())));
+        infoMap.put(INFO_NAME_KEY, info.getName());
+
+        long size = info.getLength();
+        if (size != 0) {
+            //single file mode
+            infoMap.put(INFO_LENGTH_KEY, size);
+        } else {
+            //multiple file mode
+            List<PathLength> files = info.getFiles();
+            List<Map> fileList = new ArrayList<>();
+            for (PathLength pathLength : files) {
+                Map<String, Object> pathMap = new HashMap<>();
+                List<String> path = pathLength.getPath();
+                long length = pathLength.getLength();
+                pathMap.put(INFO_LENGTH_KEY, length);
+                pathMap.put(INFO_PATH_KEY, path);
+                fileList.add(pathMap);
+            }
+            infoMap.put(INFO_FILES_KEY, fileList);
+        }
+        String encode = BEncoding.encode(infoMap);
+        byte[] bytes = encode.getBytes(Charsets.UTF_8);
+        return Systems.hash(bytes, 0, bytes.length);
+    }
+
+    public static byte[] hashinfo(Metainfo metainfo) {
+        return hashinfo(metainfo.getInfo());
     }
 }

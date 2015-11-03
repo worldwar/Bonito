@@ -1,7 +1,8 @@
 package com.worldwar.backend;
 
-import com.worldwar.backend.task.ConnectTask;
 import com.worldwar.backend.task.TaskScheduler;
+import com.worldwar.backend.task.TorrentRequestTask;
+import com.worldwar.utility.Numbers;
 import com.worldwar.utility.Systems;
 
 import java.io.File;
@@ -20,6 +21,7 @@ public class TorrentContext {
     private byte[] hashinfo;
     private byte[] bitfield;
     private List<byte[]> pieces;
+    private long pieceCount;
 
     public TorrentContext() {
         unit = new TorrentUnit();
@@ -29,7 +31,8 @@ public class TorrentContext {
     public void start() throws IOException {
         target = Systems.file(targetPath, targetSize);
         bitfield = Systems.calculateBitfield(target, pieces, pieceLength);
-        TaskScheduler.getInstance().emit(new ConnectTask(Randoms.pick(peers)));
+        pieceCount = Numbers.times(targetSize, (long)pieceLength);
+        TaskScheduler.getInstance().emit(new TorrentRequestTask(this));
         TorrentRegister.register(this);
     }
 
@@ -83,5 +86,21 @@ public class TorrentContext {
 
     public void setHashinfo(byte[] hashinfo) {
         this.hashinfo = hashinfo;
+    }
+
+    public byte[] bitfield() {
+        return bitfield;
+    }
+
+    public long pieceCount() {
+        return pieceCount;
+    }
+
+    public List<byte[]> getPieces() {
+        return pieces;
+    }
+
+    public void setPieces(List<byte[]> pieces) {
+        this.pieces = pieces;
     }
 }

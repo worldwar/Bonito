@@ -3,6 +3,7 @@ package com.worldwar.backend;
 import com.google.common.primitives.Ints;
 import com.worldwar.utility.Numbers;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
@@ -88,5 +89,14 @@ public class Bits {
 
     public static Predicate<Boolean> not() {
         return b -> !b;
+    }
+
+    public static byte[] bytes(int number) {
+        return ByteBuffer.allocate(4).putInt(number).array();
+    }
+
+    public static int toInt(byte[] bytes) {
+        ByteBuffer wrap = ByteBuffer.wrap(bytes);
+        return wrap.getInt();
     }
 }

@@ -1,6 +1,9 @@
 package com.worldwar.backend;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TorrentRegister {
@@ -24,5 +27,9 @@ public class TorrentRegister {
 
     public static void unregisterAll() {
         contexts.clear();
+    }
+
+    public static List<TorrentContext> all() {
+        return ImmutableList.copyOf(contexts.values());
     }
 }

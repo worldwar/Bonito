@@ -12,6 +12,7 @@ public class PeerHandler extends ByteToMessageDecoder {
     public static final int HANDLER_TYPE_CLIENT = 2;
     private int type;
     private ConnectionManager manager = new ConnectionManager();
+    private byte[] initialHashinfo;
 
     public PeerHandler(int type) {
         this.type = type;
@@ -21,7 +22,8 @@ public class PeerHandler extends ByteToMessageDecoder {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         manager.init(ctx);
         if (type == HANDLER_TYPE_CLIENT) {
-            new SendMessageTask(ctx, Messages.handshake(Messages.FAKE_HASH_INFO)).call();
+            new SendMessageTask(ctx, Messages.handshake(initialHashinfo)).call();
+            manager.getStatus().setHandshakeSend(true);
         }
     }
 
@@ -32,8 +34,7 @@ public class PeerHandler extends ByteToMessageDecoder {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        int x = 0;
-        System.out.println(x);
+        System.out.println("error: " + cause.getMessage());
         manager.dropConnect(ctx);
     }
 
@@ -43,5 +44,9 @@ public class PeerHandler extends ByteToMessageDecoder {
 
     public ConnectionManager getConnectionManager() {
         return manager;
+    }
+
+    public void setInitialHashinfo(byte[] initialHashinfo) {
+        this.initialHashinfo = initialHashinfo;
     }
 }

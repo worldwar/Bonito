@@ -2,6 +2,7 @@ package com.worldwar.backend;
 
 public class ConnectionStatus {
     private boolean handshakeDone;
+    private boolean handshakeSend;
     private boolean amChoking;
     private boolean amInterested;
     private boolean peerChoking;
@@ -13,6 +14,7 @@ public class ConnectionStatus {
     private byte[] peerBitField;
 
     ConnectionStatus() {
+        handshakeDone = false;
         handshakeDone = false;
         amChoking = true;
         amInterested = false;
@@ -108,5 +110,13 @@ public class ConnectionStatus {
 
     public void setPeerHave(int index) {
         Bits.set(peerBitField, index);
+    }
+
+    public boolean handshakeSend() {
+        return handshakeSend;
+    }
+
+    public void setHandshakeSend(boolean handshakeSend) {
+        this.handshakeSend = handshakeSend;
     }
 }

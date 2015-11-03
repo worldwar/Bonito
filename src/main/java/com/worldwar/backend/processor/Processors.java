@@ -19,6 +19,7 @@ public class Processors {
         processors.put(MessageType.BITFIELD, new BitFieldProcessor(status));
         processors.put(MessageType.REQUEST, new RequestProcessor(status));
         processors.put(MessageType.PIECE, new PieceProcessor(status));
+        processors.put(MessageType.PENDING, new PendingProcessor());
         return processors;
     }
 }

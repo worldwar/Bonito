@@ -48,6 +48,10 @@ public class PeerMessage {
     }
 
     public byte[] raw() {
-        return Lists.concat(new byte[] {(byte) length}, id, content);
+        if (type == MessageType.HANDSHAKE) {
+            return Lists.concat(new byte[]{(byte)length}, id, content);
+        } else {
+            return Lists.concat(Bits.bytes(length), id, content);
+        }
     }
 }

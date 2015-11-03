@@ -75,73 +75,12 @@ public class Metainfo {
     public List<byte[]> pieces() {
         return info.getPieces();
     }
-}
 
-class Info {
-    private String name;
-    private int pieceLength;
-    private List<byte[]> pieces;
-    private long length;
-    private List<PathLength> files;
-
-    public String getName() {
-        return name;
+    public int pieceLength() {
+        return info.getPieceLength();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPieceLength() {
-        return pieceLength;
-    }
-
-    public void setPieceLength(int pieceLength) {
-        this.pieceLength = pieceLength;
-    }
-
-    public List<byte[]> getPieces() {
-        return pieces;
-    }
-
-    public void setPieces(List<byte[]> pieces) {
-        this.pieces = pieces;
-    }
-
-    public long getLength() {
-        return length;
-    }
-
-    public void setLength(long length) {
-        this.length = length;
-    }
-
-    public List<PathLength> getFiles() {
-        return files;
-    }
-
-    public void setFiles(List<PathLength> files) {
-        this.files = files;
-    }
-}
-
-class PathLength {
-    private List<String> path;
-    private long length;
-
-    public List<String> getPath() {
-        return path;
-    }
-
-    public void setPath(List<String> path) {
-        this.path = path;
-    }
-
-    public long getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
+    public long targetLength() {
+        return info.getLength();
     }
 }

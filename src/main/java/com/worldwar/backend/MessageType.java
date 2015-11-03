@@ -10,5 +10,6 @@ public enum MessageType {
     HAVE,
     BITFIELD,
     REQUEST,
-    PIECE
+    PIECE,
+    PENDING
 }

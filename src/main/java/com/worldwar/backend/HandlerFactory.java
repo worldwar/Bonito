@@ -5,7 +5,9 @@ public class HandlerFactory {
         return new PeerHandler(PeerHandler.HANDLER_TYPE_SERVER);
     }
 
-    public static PeerHandler client() {
-        return new PeerHandler(PeerHandler.HANDLER_TYPE_CLIENT);
+    public static PeerHandler client(byte[] initialHashinfo) {
+        PeerHandler peerHandler = new PeerHandler(PeerHandler.HANDLER_TYPE_CLIENT);
+        peerHandler.setInitialHashinfo(initialHashinfo);
+        return peerHandler;
     }
 }

@@ -3,6 +3,7 @@ package com.worldwar.utility;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.worldwar.backend.Bits;
+import com.worldwar.backend.Constants;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,5 +93,17 @@ public class Systems {
         }
         result.add(hashCode(file, offset, (int) (length - offset)).asBytes());
         return result;
+    }
+
+    public static byte[] piece(File file, int index, int begin, int length) throws IOException {
+        int offset = index * Constants.PIECE_LENGTH + begin;
+        byte[] actual = new byte[length];
+        int actualLength = read(actual, file, offset, length);
+        if (actualLength == length) {
+            return actual;
+        }
+        else {
+            return Arrays.copyOf(actual, actualLength);
+        }
     }
 }
