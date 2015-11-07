@@ -13,7 +13,7 @@ public class Seeder {
     public static void main(String[] args) throws InterruptedException, IOException {
         System.out.println("peer id: " + new String(Messages.PEER_ID));
         ChannelFuture future = new Listener().listen(9999);
-        String target = "internalpics.pdf";
+        String target = "tmp/elephant.jpg";
         Metainfo metainfo = Metainfos.generateMetainfo(target);
         TorrentContext context = TorrentContexts.make(metainfo, target);
         TorrentRegister.register(context);

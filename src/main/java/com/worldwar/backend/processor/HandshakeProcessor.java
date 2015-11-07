@@ -2,12 +2,7 @@ package com.worldwar.backend.processor;
 
 import java.util.Arrays;
 
-import com.worldwar.backend.Channels;
-import com.worldwar.backend.ConnectionStatus;
-import com.worldwar.backend.Messages;
-import com.worldwar.backend.PeerMessage;
-import com.worldwar.backend.ProcessResult;
-import com.worldwar.backend.ProcessResultType;
+import com.worldwar.backend.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -18,13 +13,9 @@ public class HandshakeProcessor extends Processor {
 
     public ProcessResult process(PeerMessage message, ChannelHandlerContext ctx, ByteBuf in) {
         ProcessResult result = ProcessResult.IGNORE;
-        byte[] reserved = new byte[Messages.RESERVED_LENGTH];
-        byte[] hashInfo = new byte[Messages.HASH_INFO_LENGTH];
-        byte[] peerId = new byte[Messages.PEER_ID_LENGTH];
-        in.readBytes(reserved, 0, Messages.RESERVED_LENGTH);
-        in.readBytes(hashInfo, 0, Messages.HASH_INFO_LENGTH);
+        byte[] peerId = ((HandshakeMessage)message).peerid();
+        byte[] hashInfo = ((HandshakeMessage)message).hashinfo();
         if (status.handshakeDone()) {
-            in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
             if (!Arrays.equals(status.getPeerId(), peerId)) {
                 result = ProcessResult.DROP_CONNECTION;
             }
@@ -34,16 +25,13 @@ public class HandshakeProcessor extends Processor {
         } else {
             status.setHandshakeDone(true);
             status.setHashInfo(hashInfo);
+            status.setPeerId(peerId);
             if (!status.handshakeSend()) {
                 byte[] raw = Messages.handshake(hashInfo).raw();
                 Channels.write(ctx, raw);
                 System.out.println("HANDSHAKE in loop: " + Arrays.toString(raw));
-                in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
                 status.setPeerId(peerId);
                 return new ProcessResult(ProcessResultType.HANDSHAKE_DONE, null);
-            } else {
-                in.readBytes(peerId, 0, Messages.PEER_ID_LENGTH);
-                status.setPeerId(peerId);
             }
         }
         System.out.println("handshake - remote peer id: " + new String(peerId));

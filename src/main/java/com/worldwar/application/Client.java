@@ -13,8 +13,8 @@ public class Client {
     public static void main(String[] args) throws InterruptedException, IOException {
         System.out.println("peer id: " + new String(Messages.PEER_ID));
         ChannelFuture future = new Listener().listen(8888);
-        String target = "internalpics.pdf";
-        String copiedTarget = "internalpics.copied.pdf";
+        String target = "tmp/elephant.jpg";
+        String copiedTarget = "tmp/elephant.copied.jpg";
         Metainfo metainfo = Metainfos.generateMetainfo(target);
         TorrentContext context = TorrentContexts.make(metainfo, copiedTarget);
         TorrentRegister.register(context);

@@ -24,8 +24,7 @@ public class ConnectionManager {
         sendMessageTaskFactory = new SendMessageTaskFactory(ctx);
     }
 
-    public void handle(ChannelHandlerContext ctx, ByteBuf in) {
-        PeerMessage message = readMessage(in);
+    public void handle(ChannelHandlerContext ctx, ByteBuf in, PeerMessage message) {
         preProcess(message, ctx);
         process(message, ctx, in);
     }
@@ -41,39 +40,8 @@ public class ConnectionManager {
     }
 
     private void preProcess(PeerMessage message, ChannelHandlerContext ctx) {
-        if (message.getType() == MessageType.PENDING) {
-            return;
-        }
         if (!status.handshakeDone() && message.getType() != MessageType.HANDSHAKE) {
             dropConnect(ctx);
-        }
-    }
-
-    private PeerMessage readMessage(ByteBuf in) {
-        int length;
-        byte[] bytes = new byte[4];
-        if (!status.handshakeDone()) {
-            length = in.markReaderIndex().readByte();
-        } else {
-            if (in.readableBytes() >= 4) {
-                in.markReaderIndex().readBytes(bytes, 0, 4);
-                length = Bits.toInt(bytes);
-            } else {
-                return new PeerMessage(0, null, null, MessageType.PENDING);
-            }
-        }
-        if (length == 0) {
-            return Messages.keepAlive();
-        } else {
-            byte[] content = new byte[length];
-            int readableBytes = in.readableBytes();
-            if (readableBytes < length) {
-                in.resetReaderIndex();
-                return new PeerMessage(0, null, null, MessageType.PENDING);
-            } else {
-                in.readBytes(content, 0, length);
-                return Messages.message(length, content);
-            }
         }
     }
 

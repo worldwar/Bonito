@@ -28,7 +28,7 @@ public class TorrentRequestTask implements Callable<Void>{
                 for (int j = 0; j < blockCount; j++) {
                     Channel channel = Connector.createIfAbsent(peer, torrentContext.hashinfo());
                     Thread.sleep(500);
-                    int begin = i * pieceLength + j * blockLength;
+                    int begin = j * blockLength;
                     PeerMessage request = Messages.request(i, begin, Numbers.min(blockLength, targetSize - begin));
                     TaskScheduler.getInstance().emit(new SendMessageTask(channel, request));
                 }
