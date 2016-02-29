@@ -2,6 +2,7 @@ package com.worldwar;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import com.google.common.base.Charsets;
@@ -58,7 +59,7 @@ public class Metainfos {
         Map<String, Object> infoMap = new HashMap<>();
         infoMap.put(INFO_NAME_KEY, info.getName());
         infoMap.put(INFO_PIECE_LENGTH_KEY, info.getPieceLength());
-        infoMap.put(INFO_PIECES_KEY, new String(Lists.concat(info.getPieces())));
+        infoMap.put(INFO_PIECES_KEY, new String(Lists.concat(info.getPieces()), StandardCharsets.ISO_8859_1));
 
         if (!metainfo.isDictionary()) {
             infoMap.put(INFO_LENGTH_KEY, info.getLength());
@@ -85,7 +86,7 @@ public class Metainfos {
         info.setName((String)map.get(INFO_NAME_KEY));
         info.setPieceLength((Integer) map.get(INFO_PIECE_LENGTH_KEY));
         String piecesString = (String)map.get(INFO_PIECES_KEY);
-        byte[] p = piecesString.getBytes();
+        byte[] p = piecesString.getBytes(StandardCharsets.ISO_8859_1);
         List<byte[]> pieces = partition(p, 20);
         info.setPieces(pieces);
         if (map.containsKey(INFO_LENGTH_KEY)) {
@@ -164,5 +165,14 @@ public class Metainfos {
 
     public static byte[] hashinfo(Metainfo metainfo) {
         return hashinfo(metainfo.getInfo());
+    }
+
+    public static Metainfo read(String filename) {
+        BObject bObject = BEncoding.read(filename);
+        try {
+            return metainfo(bObject);
+        } catch (BadBObjectException e) {
+            return null;
+        }
     }
 }

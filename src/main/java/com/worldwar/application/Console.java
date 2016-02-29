@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class Console {
     public static void main(String[] args) throws BadBObjectException, IOException {
-        Metainfo metainfo = Metainfos.generateMetainfo("elephant.jpg");
-        BEncoding.write("animal.torrent", Metainfos.bObject(metainfo));
+        Metainfo metainfo = Metainfos.generateMetainfo("tmp/elephant.jpg");
+        BEncoding.write("tmp/animal.torrent", Metainfos.bObject(metainfo));
         System.out.println("finished");
     }
 }
