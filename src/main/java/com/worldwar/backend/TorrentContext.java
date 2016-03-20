@@ -22,6 +22,7 @@ public class TorrentContext {
     private byte[] bitfield;
     private List<byte[]> pieces;
     private long pieceCount;
+    private String announce;
 
     public TorrentContext() {
         unit = new TorrentUnit();
@@ -102,5 +103,13 @@ public class TorrentContext {
 
     public void setPieces(List<byte[]> pieces) {
         this.pieces = pieces;
+    }
+
+    public String getAnnounce() {
+        return announce;
+    }
+
+    public void setAnnounce(String announce) {
+        this.announce = announce;
     }
 }

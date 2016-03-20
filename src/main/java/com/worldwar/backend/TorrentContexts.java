@@ -21,6 +21,7 @@ public class TorrentContexts {
         torrentContext.setTargetSize(metainfo.targetLength());
         torrentContext.setHashinfo(Metainfos.hashinfo(metainfo));
         torrentContext.setPieces(metainfo.getInfo().getPieces());
+        torrentContext.setAnnounce(metainfo.getAnnounce());
         return torrentContext;
     }
 

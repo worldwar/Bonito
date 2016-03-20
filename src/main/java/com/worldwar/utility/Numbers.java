@@ -12,4 +12,14 @@ public class Numbers {
     public static int min(int x, long y) {
         return x < y ? x : (int)y;
     }
+
+    public static int number(Object object) {
+        if (object instanceof String) {
+            return Integer.parseInt(object.toString());
+        }
+        if (object instanceof Integer) {
+            return (Integer)object;
+        }
+        throw new RuntimeException();
+    }
 }

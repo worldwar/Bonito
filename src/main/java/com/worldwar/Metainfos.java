@@ -118,7 +118,7 @@ public class Metainfos {
         File file = new File(filename);
 
         Metainfo metainfo = new Metainfo();
-        metainfo.setAnnounce("http://localhost:80/announce");
+        metainfo.setAnnounce("http://localhost:3000/announce");
         metainfo.setComment("This is a test torrent");
         metainfo.setCreatedBy("Bonito-1.0.0");
         metainfo.setCreationDate(new Date());

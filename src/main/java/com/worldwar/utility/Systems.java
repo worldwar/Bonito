@@ -2,8 +2,9 @@ package com.worldwar.utility;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import com.worldwar.backend.Bits;
-import com.worldwar.backend.Constants;
+import com.ning.http.client.Request;
+import com.ning.http.client.RequestBuilder;
+import com.worldwar.backend.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,5 +106,32 @@ public class Systems {
         else {
             return Arrays.copyOf(actual, actualLength);
         }
+    }
+
+    public static TrackerRequest trackerRequest(TorrentContext context) {
+        TrackerRequest trackerRequest = new TrackerRequest();
+        trackerRequest.setUrl(context.getAnnounce());
+        trackerRequest.setEvent("started");
+        trackerRequest.setPeer_id(new String(Messages.PEER_ID));
+        trackerRequest.setPort(8888);
+        trackerRequest.setInfo_hash(new String(context.hashinfo()));
+        return trackerRequest;
+    }
+
+    public static Request requestBuilder(TrackerRequest request) {
+       return new RequestBuilder("GET")
+                .setUrl(request.getUrl())
+                .addQueryParam("info_hash", request.getInfo_hash())
+                .addQueryParam("event", request.getEvent())
+                .addQueryParam("peer_id", request.getPeer_id())
+                .addQueryParam("port", String.valueOf(request.getPort()))
+                .addQueryParam("uploaded", String.valueOf(request.getUploaded()))
+                .addQueryParam("downloaded", String.valueOf(request.getDownloaded()))
+                .addQueryParam("left", String.valueOf(request.getLeft()))
+                .addQueryParam("compact", String.valueOf(request.getCompact()))
+                .addQueryParam("no_peer_id", String.valueOf(request.isNo_peer_id()))
+                .addQueryParam("numwant", String.valueOf(request.getNumwant()))
+                .addQueryParam("key", request.getKey())
+                .addQueryParam("trackerid", request.getTrackerid()).build();
     }
 }

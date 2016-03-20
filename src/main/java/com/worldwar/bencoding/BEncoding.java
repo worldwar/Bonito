@@ -316,4 +316,25 @@ public class BEncoding {
             return null;
         }
     }
+
+    public static Object javaObject(BObject bObject) {
+        switch (bObject.getType()) {
+            case INTEGER:
+            case STRING:
+                return bObject.getValue();
+            case LIST:
+                List<Object> v = new LinkedList<>();
+                for (BObject element : (List<BObject>)bObject.getValue()) {
+                    v.add(javaObject(element));
+                }
+                return v;
+            case DICTIONARY:
+                Map<Object, Object> map = new HashMap<>();
+                for (Map.Entry<BObject, BObject> element : ((Map<BObject, BObject>) bObject.getValue()).entrySet()) {
+                    map.put(javaObject(element.getKey()), javaObject(element.getValue()));
+                }
+                return map;
+        }
+        return null;
+    }
 }
