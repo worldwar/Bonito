@@ -4,6 +4,7 @@ public class RosterItem {
     private String filename;
     private String target;
     private String torrent;
+    private Long size;
 
     public String getFilename() {
         return filename;
@@ -27,6 +28,14 @@ public class RosterItem {
 
     public void setTorrent(String torrent) {
         this.torrent = torrent;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     @Override
