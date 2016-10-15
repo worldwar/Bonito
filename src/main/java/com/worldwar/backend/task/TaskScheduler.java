@@ -26,6 +26,10 @@ public class TaskScheduler {
         executor.submit(task);
     }
 
+    public void emit(Runnable runnable) {
+        executor.execute(runnable);
+    }
+
     public void schedule(TimerTask timerTask, long seconds) {
         timer.schedule(timerTask, seconds * 1000, seconds * 1000);
     }

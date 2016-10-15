@@ -66,6 +66,16 @@ public class Bits {
         return true;
     }
 
+    public static int count(byte[] value, int start, int end, Predicate<Boolean> predicate) {
+        int sum = 0;
+        for (int i = start; i < end; i++) {
+            if (predicate.test(Bits.test(value, i))) {
+                 sum++;
+            }
+        }
+        return sum;
+    }
+
     public static int[] ints(byte[] bytes) {
         int size = bytes.length;
         int range = 4;
@@ -98,5 +108,9 @@ public class Bits {
     public static int toInt(byte[] bytes) {
         ByteBuffer wrap = ByteBuffer.wrap(bytes);
         return wrap.getInt();
+    }
+
+    public static int numberOfSetBits(byte[] bytes){
+        return count(bytes, 0, bytes.length * 8, identity());
     }
 }

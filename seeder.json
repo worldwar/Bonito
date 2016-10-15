@@ -2,15 +2,15 @@
     "count": 1,
     "torrents": [
         {
-            "filename": "performance.txt",
-            "target": "/Users/zhuran/temp/java/performance.pdf",
+            "filename": "abc.txt",
+            "target": "/Users/zhuran/Reading/java/performance.pdf",
             "torrent": "/Users/zhuran/Code/java/Bonito/tmp/performance.torrent",
             "size": 54895,
             "downloaded": 12345
         },
         {
             "filename": "reactive.pdf",
-            "target": "/Users/zhuran/temp/Manning.Functional.Reactive.Programming.2016.7.pdf",
+            "target": "/Users/zhuran/Reading/Manning.Functional.Reactive.Programming.2016.7.pdf",
             "torrent": "/Users/zhuran/temp/reactive.torrent",
             "size": 54895,
             "downloaded": 12345

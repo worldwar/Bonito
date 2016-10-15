@@ -27,7 +27,9 @@ public class TorrentContexts {
 
     public static TorrentContext from(RosterItem rosterItem) {
         Metainfo metainfo = Metainfos.read(rosterItem.getTorrent());
-        return TorrentContexts.make(metainfo, rosterItem.getTarget());
+        TorrentContext context = TorrentContexts.make(metainfo, rosterItem.getTarget());
+        context.setDownloadedSize(rosterItem.getDownloaded());
+        return context;
     }
 
     public static boolean finished(byte[] bitfield, int pieceCount) {

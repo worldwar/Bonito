@@ -1,33 +1,32 @@
 package com.worldwar.ui;
 
+import com.worldwar.backend.TorrentContext;
 import javafx.concurrent.Task;
-import javafx.scene.control.ProgressIndicator;
 
 public class DoneTask extends Task<Void> {
 
     private final int waitTime; // milliseconds
     private final int pauseTime; // milliseconds
+    private final TorrentContext torrentContext;
+    private final Torrenta torrenta;
 
-    public static final int NUM_ITERATIONS = 100;
-
-    DoneTask(int waitTime, int pauseTime) {
+    DoneTask(int waitTime, int pauseTime, TorrentContext torrentContext, Torrenta torrenta) {
         this.waitTime = waitTime;
         this.pauseTime = pauseTime;
+        this.torrentContext = torrentContext;
+        this.torrenta = torrenta;
     }
 
     @Override
     protected Void call() throws Exception {
-        this.updateProgress(ProgressIndicator.INDETERMINATE_PROGRESS, 1);
         this.updateMessage("Waiting...");
         Thread.sleep(waitTime);
         this.updateMessage("Running...");
-        for (int i = 0; i < NUM_ITERATIONS; i++) {
-            updateProgress((1.0 * i) / NUM_ITERATIONS, 1);
+        while (true) {
+            updateProgress(torrentContext.done(), 1);
+            torrenta.setDone(torrentContext.done());
             Thread.sleep(pauseTime);
         }
-        this.updateMessage("Done");
-        this.updateProgress(1, 1);
-        return null;
     }
 
 }

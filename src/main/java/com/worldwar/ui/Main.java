@@ -1,7 +1,7 @@
 package com.worldwar.ui;
 
-import com.worldwar.backend.Roster;
-import com.worldwar.backend.RosterItem;
+import com.worldwar.backend.*;
+import com.worldwar.backend.task.TaskScheduler;
 import com.worldwar.utility.Rosters;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -20,19 +20,25 @@ public class Main extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ObservableList<Torrenta> torrentData = FXCollections.observableArrayList();
+    private Roster roster;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
+        new Listener().listen(8888);
         initRootLayout();
         initData();
         show();
     }
 
     private void initData() {
-        Roster from = Rosters.from("bonito.json");
-        for (RosterItem item : from.getTorrents()) {
+        roster = Rosters.from("bonito.json");
+        roster.register();
+        for (RosterItem item : roster.getTorrents()) {
             Torrenta torrenta = rosterToTorrenta(item);
+            TorrentContext context = TorrentContexts.from(item);
+            DoneTask doneTask = new DoneTask(1000, 1000, TorrentRegister.get(context.hashinfo()), torrenta);
+            TaskScheduler.getInstance().emit(doneTask);
             torrentData.add(torrenta);
         }
     }

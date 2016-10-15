@@ -24,7 +24,7 @@ public class Controller {
     private TableColumn<Torrenta, Number> sizeColumn;
 
     @FXML
-    private TableColumn<Torrenta, Double> doneColumn;
+    private TableColumn<DoneTask, Double> doneColumn;
 
     @FXML
     private Button addTorrentButon;
@@ -39,7 +39,7 @@ public class Controller {
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         sizeColumn.setCellValueFactory(cellData -> cellData.getValue().sizeProperty());
         doneColumn.setCellValueFactory(new PropertyValueFactory<>("done"));
-        doneColumn.setCellFactory(ProgressBarTableCell.<Torrenta>forTableColumn());
+        doneColumn.setCellFactory(ProgressBarTableCell.<DoneTask>forTableColumn());
         torrentList.setCellFactory(cellData -> new ListCell<Torrenta>() {
             @Override
             public void updateItem(Torrenta item, boolean empty) {

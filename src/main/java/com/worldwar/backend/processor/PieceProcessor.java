@@ -30,6 +30,8 @@ public class PieceProcessor extends Processor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        long downloadedSize = torrentContext.getDownloadedSize() + block.length;
+        torrentContext.setDownloadedSize(downloadedSize);
         return ProcessResult.IGNORE;
     }
 }
