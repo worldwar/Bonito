@@ -13,7 +13,11 @@ public class Rosters {
             JsonReader jsonReader = new JsonReader(new FileReader(filename));
             return new Gson().fromJson(jsonReader, Roster.class);
         } catch (FileNotFoundException e) {
-            return null;
+            return empty();
         }
+    }
+
+    public static Roster empty() {
+        return new Roster();
     }
 }

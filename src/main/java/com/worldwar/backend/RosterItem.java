@@ -5,6 +5,7 @@ public class RosterItem {
     private String target;
     private String torrent;
     private Long size;
+    private Long downloaded;
 
     public String getFilename() {
         return filename;
@@ -38,12 +39,23 @@ public class RosterItem {
         this.size = size;
     }
 
+    public Long getDownloaded() {
+        return downloaded;
+    }
+
+    public RosterItem setDownloaded(Long downloaded) {
+        this.downloaded = downloaded;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "RosterItem{" +
                 "filename='" + filename + '\'' +
                 ", target='" + target + '\'' +
                 ", torrent='" + torrent + '\'' +
+                ", size=" + size +
+                ", downloaded=" + downloaded +
                 '}';
     }
 }

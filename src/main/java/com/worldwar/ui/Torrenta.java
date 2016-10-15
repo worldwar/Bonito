@@ -8,7 +8,7 @@ public class Torrenta {
     private StringProperty name;
     private StringProperty serialNo;
     private LongProperty size;
-    private FloatProperty done;
+    private DoubleProperty done;
     private IntegerProperty status;
     private ObjectProperty<LocalDateTime> addedOn;
 
@@ -16,7 +16,7 @@ public class Torrenta {
         name = new SimpleStringProperty();
         serialNo = new SimpleStringProperty();
         size = new SimpleLongProperty();
-        done = new SimpleFloatProperty();
+        done = new SimpleDoubleProperty();
         status = new SimpleIntegerProperty();
         addedOn = new SimpleObjectProperty<>();
     }
@@ -57,15 +57,15 @@ public class Torrenta {
         this.size.set(size);
     }
 
-    public float getDone() {
+    public double getDone() {
         return done.get();
     }
 
-    public FloatProperty doneProperty() {
+    public DoubleProperty doneProperty() {
         return done;
     }
 
-    public void setDone(float done) {
+    public void setDone(double done) {
         this.done.set(done);
     }
 

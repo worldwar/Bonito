@@ -2,8 +2,12 @@ package com.worldwar.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ProgressBarTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 
 public class Controller {
+
     @FXML
     private ListView<Torrenta> torrentList;
 
@@ -20,6 +24,9 @@ public class Controller {
     private TableColumn<Torrenta, Number> sizeColumn;
 
     @FXML
+    private TableColumn<Torrenta, Double> doneColumn;
+
+    @FXML
     private Button addTorrentButon;
 
     @FXML
@@ -31,6 +38,8 @@ public class Controller {
     private void initialize() {
         nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         sizeColumn.setCellValueFactory(cellData -> cellData.getValue().sizeProperty());
+        doneColumn.setCellValueFactory(new PropertyValueFactory<>("done"));
+        doneColumn.setCellFactory(ProgressBarTableCell.<Torrenta>forTableColumn());
         torrentList.setCellFactory(cellData -> new ListCell<Torrenta>() {
             @Override
             public void updateItem(Torrenta item, boolean empty) {

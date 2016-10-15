@@ -55,7 +55,7 @@
                             <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
                             <TableColumn prefWidth="75.0" text="#" />
                               <TableColumn fx:id="sizeColumn" prefWidth="75.0" text="Size" />
-                              <TableColumn prefWidth="75.0" text="Done" />
+                              <TableColumn fx:id="doneColumn" prefWidth="75.0" text="Done" />
                               <TableColumn prefWidth="75.0" text="Added On" />
                           </columns>
                         </TableView>

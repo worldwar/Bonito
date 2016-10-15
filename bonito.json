@@ -1,0 +1,19 @@
+{
+    "count": 1,
+    "torrents": [
+        {
+            "filename": "abc.txt",
+            "target": "/Users/zhuran/Reading/java/performance.pdf",
+            "torrent": "/Users/zhuran/Code/java/Bonito/tmp/performance.torrent",
+            "size": 54895,
+            "downloaded": 12345
+        },
+        {
+            "filename": "abc.txt",
+            "target": "/Users/zhuran/Reading/java/performance.pdf",
+            "torrent": "/Users/zhuran/Code/java/Bonito/tmp/performance.torrent",
+            "size": 54895,
+            "downloaded": 4002
+        }
+    ]
+}
