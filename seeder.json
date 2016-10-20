@@ -4,7 +4,7 @@
         {
             "filename": "abc.txt",
             "target": "/Users/zhuran/Reading/java/performance.pdf",
-            "torrent": "/Users/zhuran/Code/java/Bonito/tmp/performance.torrent",
+            "torrent": "/Users/zhuran/temp/performance.torrent",
             "size": 54895,
             "downloaded": 12345
         },
@@ -14,6 +14,13 @@
             "torrent": "/Users/zhuran/temp/reactive.torrent",
             "size": 54895,
             "downloaded": 12345
+        },
+        {
+            "filename": "Erlang and OTP in Action.pdf",
+            "target": "/Users/zhuran/Reading/erlang/Erlang and OTP in Action.pdf",
+            "torrent": "/Users/zhuran/temp/otp.torrent",
+            "size": 12339825,
+            "downloaded": 0
         }
     ]
 }

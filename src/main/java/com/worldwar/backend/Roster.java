@@ -27,13 +27,13 @@ public class Roster {
         TaskScheduler.getInstance().emit(new InitRequestTask());
     }
 
-    public boolean addTorrent(RosterItem rosterItem) throws IOException {
+    public TorrentContext addTorrent(RosterItem rosterItem) throws IOException {
         TorrentContext context = TorrentContexts.from(rosterItem);
         if (TorrentRegister.get(context.hashinfo()) != null) {
-            return false;
+            return null;
         }
         TorrentRegister.register(context);
         torrents.add(rosterItem);
-        return true;
+        return context;
     }
 }

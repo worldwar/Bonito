@@ -1,10 +1,12 @@
 package com.worldwar.ui;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.IOException;
 
 public class Controller {
 
@@ -55,5 +57,10 @@ public class Controller {
         this.main = main;
         torrentList.setItems(main.getTorrentData());
         torrentTable.setItems(main.getTorrentData());
+    }
+
+    @FXML
+    private void handleAddButton(ActionEvent event) throws IOException {
+        main.handleAddButton();
     }
 }

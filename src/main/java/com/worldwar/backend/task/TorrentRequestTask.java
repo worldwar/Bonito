@@ -14,7 +14,7 @@ public class TorrentRequestTask implements Callable<Void>{
 
     @Override
     public Void call() throws Exception {
-        TaskScheduler.getInstance().emit(new TrackerRequestTask(Systems.trackerRequest(torrentContext),
+        TaskScheduler.getInstance().emit(new LocalTrackerRequestTask(Systems.trackerRequest(torrentContext),
                 new TrackerResponseCallback(torrentContext)));
         return null;
     }

@@ -33,7 +33,7 @@ public class TrackerResponseCallback {
                 int blockCount = Numbers.times(Numbers.min(pieceLength, remain), blockLength);
                 for (int j = 0; j < blockCount; j++) {
                     Channel channel = Connector.createIfAbsent(peer, context.hashinfo());
-                    Thread.sleep(500);
+                    Thread.sleep(50);
                     int begin = j * blockLength;
                     PeerMessage request = Messages.request(i, begin, Numbers.min(blockLength, targetSize - begin));
                     TaskScheduler.getInstance().emit(new SendMessageTask(channel, request));

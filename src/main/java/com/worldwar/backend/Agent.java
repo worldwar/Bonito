@@ -23,20 +23,20 @@ public class Agent {
     }
 
     public ChannelFuture start() throws InterruptedException {
-        ChannelFuture future = listener.listen(9999);
+        ChannelFuture future = listener.listen(8888);
         roster.register();
         return future;
     }
 
-    public boolean add(RosterItem rosterItem) throws IOException {
-        boolean success = roster.addTorrent(rosterItem);
-        if (success) {
+    public TorrentContext add(RosterItem rosterItem) throws IOException {
+        TorrentContext context = roster.addTorrent(rosterItem);
+        if (context != null) {
             save();
         }
-        return success;
+        return context;
     }
 
-    public boolean add(String torrent, String target, String filename) throws IOException {
+    public TorrentContext add(String torrent, String target, String filename) throws IOException {
         RosterItem rosterItem = TorrentContexts.rosterItem(torrent, target, filename);
         return add(rosterItem);
     }
@@ -47,5 +47,9 @@ public class Agent {
 
     public int count() {
         return roster.getTorrents().size();
+    }
+
+    public Roster roster() {
+        return roster;
     }
 }

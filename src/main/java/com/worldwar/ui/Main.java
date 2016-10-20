@@ -2,7 +2,6 @@ package com.worldwar.ui;
 
 import com.worldwar.backend.*;
 import com.worldwar.backend.task.TaskScheduler;
-import com.worldwar.utility.Rosters;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,27 +19,30 @@ public class Main extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
     private ObservableList<Torrenta> torrentData = FXCollections.observableArrayList();
-    private Roster roster;
+    private Agent agent;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        new Listener().listen(8888);
+        agent = new Agent("bonito.json");
+        agent.start();
         initRootLayout();
         initData();
         show();
     }
 
     private void initData() {
-        roster = Rosters.from("bonito.json");
-        roster.register();
-        for (RosterItem item : roster.getTorrents()) {
-            Torrenta torrenta = rosterToTorrenta(item);
-            TorrentContext context = TorrentContexts.from(item);
-            DoneTask doneTask = new DoneTask(1000, 1000, TorrentRegister.get(context.hashinfo()), torrenta);
-            TaskScheduler.getInstance().emit(doneTask);
-            torrentData.add(torrenta);
+        for (RosterItem item : agent.roster().getTorrents()) {
+            addTorrenta(item);
         }
+    }
+
+    private void addTorrenta(RosterItem item) {
+        Torrenta torrenta = rosterToTorrenta(item);
+        TorrentContext context = TorrentContexts.from(item);
+        DoneTask doneTask = new DoneTask(1000, 1000, TorrentRegister.get(context.hashinfo()), torrenta);
+        TaskScheduler.getInstance().emit(doneTask);
+        torrentData.add(torrenta);
     }
 
     private Torrenta rosterToTorrenta(RosterItem item) {
@@ -75,5 +77,15 @@ public class Main extends Application {
 
     public ObservableList<Torrenta> getTorrentData() {
         return torrentData;
+    }
+
+    public void handleAddButton() throws IOException {
+        RosterItem rosterItem = TorrentContexts.rosterItem("/Users/zhuran/temp/otp.torrent",
+                "/Users/zhuran/temp/Erlang and OTP in Action.pdf", "Erlang and OTP in Action.pdf");
+        TorrentContext context = agent.add(rosterItem);
+        if (context != null) {
+            addTorrenta(rosterItem);
+            context.start();
+        }
     }
 }
