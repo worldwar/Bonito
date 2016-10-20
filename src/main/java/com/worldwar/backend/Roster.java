@@ -3,20 +3,13 @@ package com.worldwar.backend;
 import com.worldwar.backend.task.InitRequestTask;
 import com.worldwar.backend.task.TaskScheduler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Roster {
-    private int count;
+
     private List<RosterItem> torrents = new ArrayList<>();
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     public List<RosterItem> getTorrents() {
         return torrents;
@@ -32,5 +25,15 @@ public class Roster {
             TorrentRegister.register(context);
         }
         TaskScheduler.getInstance().emit(new InitRequestTask());
+    }
+
+    public boolean addTorrent(RosterItem rosterItem) throws IOException {
+        TorrentContext context = TorrentContexts.from(rosterItem);
+        if (TorrentRegister.get(context.hashinfo()) != null) {
+            return false;
+        }
+        TorrentRegister.register(context);
+        torrents.add(rosterItem);
+        return true;
     }
 }

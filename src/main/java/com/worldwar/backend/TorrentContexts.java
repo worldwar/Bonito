@@ -35,4 +35,15 @@ public class TorrentContexts {
     public static boolean finished(byte[] bitfield, int pieceCount) {
         return Bits.every(bitfield, 0, pieceCount, Bits.identity());
     }
+
+    public static RosterItem rosterItem(String torrent, String target, String filename) {
+        Metainfo metainfo = Metainfos.read(torrent);
+        RosterItem rosterItem = new RosterItem();
+        rosterItem.setTorrent(torrent);
+        rosterItem.setTarget(target);
+        rosterItem.setFilename(filename);
+        rosterItem.setSize(metainfo.getInfo().getLength());
+        rosterItem.setDownloaded(0L);
+        return rosterItem;
+    }
 }
