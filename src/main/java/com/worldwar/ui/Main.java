@@ -25,7 +25,9 @@ public class Main extends Application {
 
     private Agent agent;
 
-    private Stage addDialog;
+    private Stage addDialog = new Stage();
+
+    private Stage createDialog = new Stage();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -76,6 +78,11 @@ public class Main extends Application {
         rootLayout = fxmlLoader.load();
         primaryStage.setScene(new Scene(rootLayout, 831, 475));
         primaryStage.show();
+
+        addDialog.initModality(Modality.APPLICATION_MODAL);
+        createDialog.initModality(Modality.APPLICATION_MODAL);
+        addDialog.initOwner(primaryStage.getScene().getWindow());
+        createDialog.initOwner(primaryStage.getScene().getWindow());
     }
 
     public static void main(String[] args) {
@@ -87,23 +94,31 @@ public class Main extends Application {
     }
 
     public void handleAddButton() throws IOException {
-        addDialog = new Stage();
+        popupDialog(addDialog, "/addDialog.fxml", "Add Torrent");
+    }
+
+    public void handleCreateButton() throws IOException {
+        popupDialog(createDialog, "/createDialog.fxml", "create Torrent");
+    }
+
+    private void popupDialog(Stage dialog, String dialogResource, String title) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Main.class.getResource("/addDialog.fxml"));
+        fxmlLoader.setLocation(Main.class.getResource(dialogResource));
         Parent root = fxmlLoader.load();
-        addDialog.setScene(new Scene(root));
+        dialog.setScene(new Scene(root));
 
-        AddDialogController controller = fxmlLoader.getController();
+        BaseController controller = fxmlLoader.getController();
         controller.setMain(this);
-
-        addDialog.setTitle("Add Torrent");
-        addDialog.initModality(Modality.APPLICATION_MODAL);
-        addDialog.initOwner(primaryStage.getScene().getWindow());
-        addDialog.showAndWait();
+        dialog.setTitle(title);
+        dialog.showAndWait();
     }
 
     public void closeAddDialog() {
         addDialog.close();
+    }
+
+    public void closeCreateDialog() {
+        createDialog.close();
     }
 
     public void addTorrent(RosterItem rosterItem) {

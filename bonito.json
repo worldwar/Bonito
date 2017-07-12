@@ -20,6 +20,13 @@
       "torrent": "/Users/zhuran/temp/otp.torrent",
       "size": 12339825,
       "downloaded": 0
+    },
+    {
+      "filename": "netty",
+      "target": "/Users/zhuran/temp",
+      "torrent": "/Users/zhuran/temp/xxx.torrent",
+      "size": 3487686,
+      "downloaded": 0
     }
   ]
 }

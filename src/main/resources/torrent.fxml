@@ -21,6 +21,7 @@
                           <columnConstraints>
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -28,6 +29,7 @@
                            <children>
                               <Button fx:id="addTorrentButon" alignment="CENTER" mnemonicParsing="false" onAction="#handleAddButton" text="Add" />
                               <Button fx:id="addURLButton" alignment="CENTER_RIGHT" mnemonicParsing="false" text="Add Url" GridPane.columnIndex="1" />
+                              <Button fx:id="createTorrentButton" mnemonicParsing="false" onAction="#handleCreateButton" text="Create" GridPane.columnIndex="2" />
                            </children>
                         </GridPane>
                      </children>

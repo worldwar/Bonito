@@ -7,14 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
 
-public class AddDialogController {
-
-    private Main main;
+public class AddDialogController extends BaseController {
 
     @FXML
     private TextField torrentFileText;
@@ -25,21 +22,11 @@ public class AddDialogController {
     @FXML
     private TextField nameText;
 
-    public void setMain(Main main) {
-        this.main = main;
-    }
+
 
     @FXML
     private void popupFileDialog(ActionEvent event) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Torrent File");
-        fileChooser.setSelectedExtensionFilter(
-                new FileChooser.ExtensionFilter("torrent file", ".torrent"));
-        File file = fileChooser.showOpenDialog(((Button) event.getSource()).getScene().getWindow());
-        if (file != null) {
-            String path = file.getAbsolutePath();
-            torrentFileText.setText(path);
-        }
+        Dialogs.popupFileDialog(event, "Open Torrent File", torrentFileText);
     }
 
     @FXML

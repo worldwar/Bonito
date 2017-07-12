@@ -34,6 +34,9 @@ public class Controller {
     @FXML
     private Button addURLButton;
 
+    @FXML
+    private Button createTorrentButton;
+
     private Main main;
 
     @FXML
@@ -62,5 +65,10 @@ public class Controller {
     @FXML
     private void handleAddButton(ActionEvent event) throws IOException {
         main.handleAddButton();
+    }
+
+    @FXML
+    private void handleCreateButton(ActionEvent event) throws IOException {
+        main.handleCreateButton();
     }
 }
